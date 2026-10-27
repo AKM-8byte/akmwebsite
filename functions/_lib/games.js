@@ -2,7 +2,7 @@
 // scripts/sync.mjs (yerel) bu dosyayı kullanır.
 import { norm, parseCsv, rowsToObjects, toNum, yes, stripTags } from './films.js';
 
-export const GAMES_SHEET_ID = '1-zdEPACCAm20meenV-YeFlWb8LQL86dEuRWAOcZURTg';
+export const GAMES_SHEET_ID = '1mBIu_u2SYgbXXcCjpxoAbFYPu5SxPY7IoqCVuJp_eqE';
 export const GAMES_CSV = `https://docs.google.com/spreadsheets/d/${GAMES_SHEET_ID}/export?format=csv`;
 
 const STATUS = {
