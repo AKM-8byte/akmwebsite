@@ -55,8 +55,16 @@ export async function gameDetails(igdb, title) {
   const fields = `fields name, url, summary, first_release_date, aggregated_rating, total_rating,
     cover.image_id, artworks.image_id, screenshots.image_id, videos.video_id, genres.name, platforms.name,
     websites.url, websites.category, involved_companies.developer, involved_companies.company.name;`;
-  const hits = await igdb('games', `search "${q}"; ${fields} where version_parent = null; limit 5;`);
-  const g = hits.find((h) => norm(h.name) === norm(title)) || hits[0];
+  const search = (text) => igdb('games', `search "${text}"; ${fields} where version_parent = null; limit 10;`);
+  let hits = await search(q);
+  // "Mafia: The City of Lost Heaven" IGDB'de sadece "Mafia" — alt başlıksız da dene.
+  if (!hits.length && q.includes(':')) hits = await search(q.split(':')[0].trim());
+  // Aynı adlı çıkmamış remake'ler yerine, çıkış tarihi olan en eski eşleşmeyi seç.
+  const released = (h) => h.first_release_date && h.first_release_date * 1000 < Date.now();
+  const exact = hits.filter((h) => norm(h.name) === norm(title) || norm(h.name) === norm(q.split(':')[0]));
+  const g =
+    exact.filter(released).sort((a, b) => a.first_release_date - b.first_release_date)[0] ||
+    hits.find(released) || exact[0] || hits[0];
   if (!g) return { igdb_id: null };
   const backdrop = g.artworks?.[0]?.image_id || g.screenshots?.[0]?.image_id;
   return {
