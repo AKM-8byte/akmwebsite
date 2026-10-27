@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AKM · Kişisel arşiv</title>
+  <meta name="description" content="İzlediğim filmler, oynadığım oyunlar ve yaptığım projeler — hepsi tek bir yerde.">
+  <meta name="theme-color" content="#0b0a09">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/home.css">
+</head>
+<body>
+  <header id="site-header"></header>
+
+  <main>
+    <section class="hero">
+      <div class="wall" aria-hidden="true"><div class="wall__plane" id="wall"></div></div>
+      <div class="wrap hero__inner">
+        <h1 class="display hero__title" aria-label="AKM"><span>A</span><span>K</span><span>M</span><sup>/ arşiv</sup></h1>
+        <div class="hero__row">
+          <p class="hero__intro" id="intro"></p>
+          <div class="now" id="now" aria-label="Şu an"></div>
+        </div>
+      </div>
+      <span class="scroll-cue" aria-hidden="true">KAYDIR</span>
+    </section>
+
+    <div class="ticker" aria-hidden="true"><div class="ticker__track" id="ticker"></div></div>
+
+    <div class="wrap">
+      <nav class="doors" aria-label="Bölümler">
+        <a class="door reveal" href="/filmler/">
+          <span class="door__num">01</span>
+          <div>
+            <h2 class="door__title">Filmler</h2>
+            <p class="door__desc">Beni etkileyen filmler; her birine bir bilet, bir not, bir puan.</p>
+          </div>
+          <span class="door__count"><b id="c-films">—</b>film</span>
+          <div class="door__fan" id="fan-films"></div>
+        </a>
+        <a class="door reveal" href="/oyunlar/">
+          <span class="door__num">02</span>
+          <div>
+            <h2 class="door__title">Oyunlar</h2>
+            <p class="door__desc">Bitirdiklerim, bıraktıklarım ve şu an elimde olan kartuş.</p>
+          </div>
+          <span class="door__count"><b id="c-games">—</b>oyun</span>
+          <div class="door__fan door__fan--wide" id="fan-games"></div>
+        </a>
+        <a class="door reveal" href="/projeler/">
+          <span class="door__num">03</span>
+          <div>
+            <h2 class="door__title">Projeler</h2>
+            <p class="door__desc">Kendi ellerimle kurduğum şeyler — bu site dahil.</p>
+          </div>
+          <span class="door__count"><b id="c-projects">—</b>proje</span>
+          <div class="door__fan door__fan--wide" id="fan-projects"></div>
+        </a>
+      </nav>
+
+      <section class="about reveal" id="hakkimda">
+        <div>
+          <span class="eyebrow">Hakkımda</span>
+          <h2 class="display">Merhaba<em>.</em></h2>
+        </div>
+        <div>
+          <p class="about__text" id="about"></p>
+          <div class="about__links" id="links"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script type="module" src="/assets/js/pages/home.js"></script>
+</body>
+</html>

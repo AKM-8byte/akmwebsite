@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Oyunlar · AKM</title>
+  <meta name="description" content="Oynadığım, bitirdiğim ve sırada bekleyen oyunlar — puanlarım ve yorumlarımla.">
+  <meta name="theme-color" content="#0b0a09">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://media.rawg.io">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/archive.css">
+  <link rel="stylesheet" href="/assets/css/scene.css">
+</head>
+<body>
+  <header id="site-header"></header>
+  <div class="ambient" id="ambient" aria-hidden="true"></div>
+
+  <main>
+    <section class="archive-hero wrap">
+      <span class="eyebrow">Arşiv 02 — Oyunlar</span>
+      <div class="archive-hero__row">
+        <h1 class="display">Kaydet, devam et, <em>bir daha.</em></h1>
+        <p class="lead">Bitirdiklerim, yarıda bıraktıklarım ve sırada bekleyenler. Bir kartuşu seç; puanım, yorumum ve o oyunla geçen günlerim seni bekliyor.</p>
+      </div>
+      <div class="stats" id="stats"></div>
+    </section>
+
+    <div class="wrap">
+      <div class="toolbar" id="toolbar">
+        <div class="tabs" id="tabs" role="tablist" aria-label="Duruma göre"></div>
+        <label class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
+          <span class="visually-hidden">Oyun ara</span>
+          <input id="q" type="search" placeholder="Oyun ya da stüdyo ara…" autocomplete="off">
+          <kbd>/</kbd>
+        </label>
+        <select class="select" id="genre" aria-label="Tür"><option value="">Tüm türler</option></select>
+        <select class="select" id="sort" aria-label="Sıralama">
+          <option value="recent">En son</option>
+          <option value="rating">En yüksek puan</option>
+          <option value="status">Duruma göre</option>
+          <option value="title">A → Z</option>
+        </select>
+        <button class="toggle" id="fav" type="button" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.2 3 4.5 6.6 4.5c2 0 3.5 1.1 4.4 2.6.9-1.5 2.4-2.6 4.4-2.6 3.6 0 5.7 3.7 4.2 7.2C19.5 16.4 12 21 12 21z"/></svg>
+          Favoriler
+        </button>
+      </div>
+      <p class="result-line" id="result" aria-live="polite"></p>
+      <div id="extra"></div>
+      <section class="grid grid--wide" id="grid" aria-label="Oyunlar"></section>
+    </div>
+  </main>
+
+  <div id="scene-root"></div>
+  <footer id="site-footer"></footer>
+  <script type="module" src="/assets/js/pages/games.js"></script>
+</body>
+</html>

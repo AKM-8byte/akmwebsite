@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Filmler · AKM</title>
+  <meta name="description" content="İzlediğim ve sevdiğim filmler — kendi puanlarım ve notlarımla.">
+  <meta name="theme-color" content="#0b0a09">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://image.tmdb.org">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/archive.css">
+  <link rel="stylesheet" href="/assets/css/scene.css">
+</head>
+<body>
+  <header id="site-header"></header>
+  <div class="ambient" id="ambient" aria-hidden="true"></div>
+
+  <main>
+    <section class="archive-hero wrap">
+      <span class="eyebrow">Arşiv 01 — Filmler</span>
+      <div class="archive-hero__row">
+        <h1 class="display">Bazı filmler insanda <em>kalır.</em></h1>
+        <p class="lead">Üzerine gel, biletini gör. Tıkla, perdeyi aç. Her birinin yanında kendi notum ve puanım var.</p>
+      </div>
+      <div class="stats" id="stats"></div>
+    </section>
+
+    <div class="wrap">
+      <div class="toolbar" id="toolbar">
+        <label class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
+          <span class="visually-hidden">Film, yönetmen ya da oyuncu ara</span>
+          <input id="q" type="search" placeholder="Film, yönetmen, oyuncu…" autocomplete="off">
+          <kbd>/</kbd>
+        </label>
+        <select class="select" id="genre" aria-label="Tür"><option value="">Tüm türler</option></select>
+        <select class="select" id="decade" aria-label="Yıllar"><option value="">Tüm yıllar</option></select>
+        <select class="select" id="sort" aria-label="Sıralama">
+          <option value="recent">Son izlenen</option>
+          <option value="rating">En yüksek puan</option>
+          <option value="year">En yeni film</option>
+          <option value="oldest">En eski film</option>
+          <option value="title">A → Z</option>
+        </select>
+        <button class="toggle" id="fav" type="button" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.2 3 4.5 6.6 4.5c2 0 3.5 1.1 4.4 2.6.9-1.5 2.4-2.6 4.4-2.6 3.6 0 5.7 3.7 4.2 7.2C19.5 16.4 12 21 12 21z"/></svg>
+          Favoriler
+        </button>
+      </div>
+      <p class="result-line" id="result" aria-live="polite"></p>
+      <section class="grid" id="grid" aria-label="Filmler"></section>
+    </div>
+  </main>
+
+  <div id="scene-root"></div>
+  <footer id="site-footer"></footer>
+  <script type="module" src="/assets/js/pages/films.js"></script>
+</body>
+</html>
