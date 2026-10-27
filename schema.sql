@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS films (
 
 CREATE TABLE IF NOT EXISTS games (
   id          INTEGER PRIMARY KEY AUTOINCREMENT,
-  rawg_id     INTEGER UNIQUE,
+  igdb_id     INTEGER UNIQUE,
   title       TEXT NOT NULL,
   year        INTEGER,
   genres      TEXT NOT NULL DEFAULT '[]',
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS games (
   favorite    INTEGER NOT NULL DEFAULT 0,
   started_at  TEXT,
   finished_at TEXT,
-  details     TEXT NOT NULL DEFAULT '{}', -- screenshots, metacritic, developers, all_platforms, playtime, description
+  details     TEXT NOT NULL DEFAULT '{}', -- backdrop, screenshots, critic_score, developers, all_platforms, trailer, description
   created_at  TEXT NOT NULL DEFAULT (datetime('now'))
 );
 

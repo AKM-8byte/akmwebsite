@@ -1,7 +1,7 @@
 import { mountLayout } from '../layout.js';
 import { adminFetch } from '../api.js';
 import { GAME_STATUS } from '../scenes.js';
-import { esc, tmdbImg, rawgImg, fmtScore, imgFallbacks } from '../util.js';
+import { esc, tmdbImg, igdbImg, fmtScore, imgFallbacks } from '../util.js';
 
 mountLayout('');
 
@@ -157,13 +157,13 @@ $('#game-search').addEventListener('submit', async (e) => {
   const q = new FormData(e.target).get('q');
   const box = $('#game-results');
   box.innerHTML = '<p class="hint">Aranıyor…</p>';
-  const hits = await run(() => adminFetch(`rawg/search?q=${encodeURIComponent(q)}`)).catch(() => []);
-  const owned = new Set(state.games.map((g) => g.rawg_id));
+  const hits = await run(() => adminFetch(`igdb/search?q=${encodeURIComponent(q)}`)).catch(() => []);
+  const owned = new Set(state.games.map((g) => g.igdb_id));
   box.innerHTML = hits.length
     ? hits.map((h, i) => `
-      <button class="result" data-i="${i}" ${owned.has(h.rawg_id) ? 'disabled style="opacity:.4"' : ''}>
-        <div class="result__img">${h.cover_url ? `<img data-fallback src="${esc(rawgImg(h.cover_url, 420))}" alt="">` : ''}</div>
-        <b>${esc(h.title)}</b><small>${h.year ?? '—'}${owned.has(h.rawg_id) ? ' · arşivde' : ''}</small>
+      <button class="result" data-i="${i}" ${owned.has(h.igdb_id) ? 'disabled style="opacity:.4"' : ''}>
+        <div class="result__img">${h.cover_url ? `<img data-fallback src="${esc(igdbImg(h.cover_url, 'cover_big'))}" alt="">` : ''}</div>
+        <b>${esc(h.title)}</b><small>${h.year ?? '—'}${owned.has(h.igdb_id) ? ' · arşivde' : ''}</small>
       </button>`).join('')
     : '<p class="hint">Sonuç yok.</p>';
   imgFallbacks(box);
@@ -183,7 +183,7 @@ function gameForm(hit, existing = null) {
   holder.innerHTML = `
     <form class="form">
       <div class="form__title">
-        ${hit.cover_url ? `<img src="${esc(rawgImg(hit.cover_url, 200))}" alt="" style="width:90px">` : ''}
+        ${hit.cover_url ? `<img src="${esc(igdbImg(hit.cover_url, 'cover_small'))}" alt="">` : ''}
         <div><b>${esc(hit.title)}</b><small>${hit.year ?? ''}</small></div>
       </div>
       <label class="field" style="max-width:260px"><span>Durum</span>
@@ -213,7 +213,7 @@ function gameForm(hit, existing = null) {
     btn.disabled = true;
     try {
       if (existing) await run(() => adminFetch(`games/${existing.id}`, { method: 'PUT', body }), 'Güncellendi');
-      else await run(() => adminFetch('games', { method: 'POST', body: { ...body, rawg_id: hit.rawg_id } }), `${hit.title} eklendi`);
+      else await run(() => adminFetch('games', { method: 'POST', body: { ...body, igdb_id: hit.igdb_id } }), `${hit.title} eklendi`);
       holder.innerHTML = '';
       $('#game-results').innerHTML = '';
       loadList('games');
@@ -226,7 +226,7 @@ function renderGames() {
   $('#game-count').textContent = `(${state.games.length})`;
   $('#game-list').innerHTML = state.games.map((g) => `
     <div class="item">
-      ${thumb(rawgImg(g.cover_url, 200))}
+      ${thumb(igdbImg(g.cover_url, 'cover_small'))}
       <div><b>${esc(g.title)}</b><small>${(GAME_STATUS[g.status] || {}).label || ''} · ${fmtScore(g.rating)}/10${g.favorite ? ' · ♥' : ''}</small></div>
       <div class="item__actions">
         <button class="mini" data-edit="${g.id}">Düzenle</button>
@@ -243,7 +243,7 @@ $('#game-list').addEventListener('click', async (e) => {
   const g = state.games.find((x) => String(x.id) === (t.dataset.edit || t.dataset.refresh || t.dataset.del));
   if (!g) return;
   if (t.dataset.edit) gameForm(g, g);
-  if (t.dataset.refresh) { await run(() => adminFetch(`games/${g.id}/refresh`, { method: 'POST' }), 'RAWG bilgileri yenilendi'); loadList('games'); }
+  if (t.dataset.refresh) { await run(() => adminFetch(`games/${g.id}/refresh`, { method: 'POST' }), 'IGDB bilgileri yenilendi'); loadList('games'); }
   if (t.dataset.del && confirm(`"${g.title}" arşivden silinsin mi?`)) { await run(() => adminFetch(`games/${g.id}`, { method: 'DELETE' }), 'Silindi'); loadList('games'); }
 });
 

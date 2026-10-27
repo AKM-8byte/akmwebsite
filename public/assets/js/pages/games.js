@@ -1,7 +1,7 @@
 import { mountLayout } from '../layout.js';
 import { createArchive, favBadge, fallbackArt } from '../archive.js';
 import { gameScene, gameAfterScene, GAME_STATUS } from '../scenes.js';
-import { esc, stars, rawgImg, fmtScore, daysBetween, hueFromString } from '../util.js';
+import { esc, stars, igdbImg, fmtScore, daysBetween, hueFromString } from '../util.js';
 
 mountLayout('oyunlar');
 
@@ -15,7 +15,7 @@ function card(g, i) {
     <button class="card__hit" data-open="${g.id}" aria-label="${esc(g.title)} — ayrıntılar">
       <div class="card__media">
         ${fallbackArt(g.title, g.year, hueFromString(g.title))}
-        ${g.cover_url ? `<img data-fallback loading="lazy" src="${esc(rawgImg(g.cover_url))}" alt="">` : ''}
+        ${g.cover_url ? `<img data-fallback loading="lazy" src="${esc(igdbImg(g.cover_url, 'cover_big'))}" alt="">` : ''}
         <span class="card__glare"></span>
         <span class="card__badge" style="color:${st.color}">${g.status === 'oynuyorum' ? '<span class="pulse" style="width:7px;height:7px"></span>' : ''}${st.short}</span>
         ${favBadge(g)}
@@ -45,7 +45,7 @@ function spotlight(visible, all, s) {
     <div class="spotlight__list">
       ${now.map((g) => `
         <button class="spot" data-open="${g.id}">
-          <div class="spot__media" style="position:absolute;inset:0;z-index:-2">${g.cover_url ? `<img data-fallback src="${esc(rawgImg(g.cover_url))}" alt="">` : fallbackArt(g.title, g.year, hueFromString(g.title))}</div>
+          <div class="spot__media" style="position:absolute;inset:0;z-index:-2">${g.details?.backdrop || g.cover_url ? `<img data-fallback src="${esc(igdbImg(g.details?.backdrop || g.cover_url, '720p'))}" alt="">` : fallbackArt(g.title, g.year, hueFromString(g.title))}</div>
           <div class="spot__body">
             ${g.started_at ? `<span class="spot__days">${daysBetween(g.started_at)}. gün</span>` : ''}
             <h2 class="spot__title">${esc(g.title)}</h2>
@@ -120,6 +120,6 @@ createArchive({
   sort: (items, s) => [...items].sort(SORTS[s.sort] || SORTS.recent),
   scene: gameScene,
   afterScene: gameAfterScene,
-  ambientUrl: (g) => rawgImg(g?.cover_url),
-  toneUrl: (g) => rawgImg(g.cover_url, 200),
+  ambientUrl: (g) => igdbImg(g?.details?.backdrop || g?.cover_url, '720p'),
+  toneUrl: (g) => igdbImg(g.cover_url, 'cover_small'),
 });

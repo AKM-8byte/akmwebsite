@@ -1,7 +1,7 @@
 // Detay sahneleri: film için sinema afişi + not kâğıdı, oyun için 3D kutu + zaman çizelgesi.
 import { SITE } from './site.js';
 import {
-  esc, icons, tmdbImg, rawgImg, fmtDate, fmtRuntime, fmtScore, daysBetween, hueFromString,
+  esc, icons, tmdbImg, igdbImg, fmtDate, fmtRuntime, fmtScore, daysBetween, hueFromString,
 } from './util.js';
 import { fallbackArt } from './archive.js';
 
@@ -210,12 +210,11 @@ export function gameScene(g, ctx) {
   const meta = [
     g.year && ['Çıkış', d.released ? fmtDate(d.released) : g.year],
     d.developers?.length && ['Geliştirici', d.developers.slice(0, 2).join(', ')],
-    d.playtime && ['Ort. oynanış', `${d.playtime} saat`],
   ].filter(Boolean);
 
   return `
   <div class="scene scene--game" role="dialog" aria-modal="true" aria-labelledby="sc-title">
-    <div class="scene__bg" aria-hidden="true">${g.cover_url ? `<img src="${rawgImg(g.cover_url)}" alt="">` : ''}</div>
+    <div class="scene__bg" aria-hidden="true">${d.backdrop || g.cover_url ? `<img src="${esc(igdbImg(d.backdrop || g.cover_url, '1080p'))}" alt="">` : ''}</div>
     ${bar(g, ctx, 'Oyun')}
     <div class="scene__body wrap">
       <div class="sc-grid">
@@ -224,7 +223,7 @@ export function gameScene(g, ctx) {
             <div class="gbox__spine"><span>${esc(g.title)}</span></div>
             <div class="gbox__front" data-hero style="view-transition-name:akm-hero">
               ${fallbackArt(g.title, g.year, hue)}
-              ${g.cover_url ? `<img data-fallback src="${esc(g.cover_url)}" alt="${esc(g.title)} kapağı">` : ''}
+              ${g.cover_url ? `<img data-fallback src="${esc(igdbImg(g.cover_url, 'cover_big_2x'))}" alt="${esc(g.title)} kapağı">` : ''}
               <span class="gbox__strip">AKM · ${esc((g.platforms || [])[0] || 'Oyun')}</span>
               <span class="gbox__label">${esc(g.title)}</span>
             </div>
@@ -233,10 +232,11 @@ export function gameScene(g, ctx) {
         <div class="sc-info">
           <span class="status status--${esc(g.status)}">${g.status === 'oynuyorum' ? '<span class="pulse"></span>' : '<span class="status__icon"></span>'}${st.label}</span>
           <h2 class="display sc-title" id="sc-title">${esc(g.title)}</h2>
-          ${meta.length || d.metacritic ? `
+          ${meta.length || d.critic_score || d.user_score ? `
           <ul class="sc-meta">
             ${meta.map(([k, v]) => `<li><small>${k}</small><span>${esc(v)}</span></li>`).join('')}
-            ${d.metacritic ? `<li><small>Metacritic</small><span class="meta-score" style="--c:${metaColor(d.metacritic)}">${d.metacritic}</span></li>` : ''}
+            ${d.critic_score ? `<li><small>Eleştirmenler</small><span class="meta-score" style="--c:${metaColor(d.critic_score)}">${d.critic_score}</span></li>` : ''}
+            ${d.user_score ? `<li><small>Oyuncular</small><span class="meta-score" style="--c:${metaColor(d.user_score)}">${d.user_score}</span></li>` : ''}
           </ul>` : ''}
           ${g.genres?.length ? `<div class="sc-chips">${g.genres.map((x) => `<span class="chip">${esc(x)}</span>`).join('')}</div>` : ''}
           ${platforms.length ? `
@@ -245,9 +245,10 @@ export function gameScene(g, ctx) {
               <div class="sc-chips">${platforms.slice(0, 10).map((p) => `<span class="chip ${mine.has(p) ? 'is-mine' : ''}">${esc(p)}</span>`).join('')}</div>
             </div>` : ''}
           ${timeline(g)}
-          ${d.description ? `<p class="sc-desc"><small>Hakkında · RAWG</small>${esc(d.description.length > 520 ? `${d.description.slice(0, 520)}…` : d.description)}</p>` : ''}
+          ${d.description ? `<p class="sc-desc"><small>Hakkında · IGDB</small>${esc(d.description.length > 520 ? `${d.description.slice(0, 520)}…` : d.description)}</p>` : ''}
           <div class="sc-actions">
-            ${g.rawg_id ? `<a class="btn" href="https://rawg.io/games/${g.rawg_id}" target="_blank" rel="noopener">RAWG ${icons.arrowUpRight}</a>` : ''}
+            ${d.trailer ? `<button class="btn btn--accent" data-trailer="${esc(d.trailer)}">${icons.play} Fragmanı izle</button>` : ''}
+            ${d.igdb_url ? `<a class="btn" href="${esc(d.igdb_url)}" target="_blank" rel="noopener">IGDB ${icons.arrowUpRight}</a>` : ''}
             ${d.website ? `<a class="btn" href="${esc(d.website)}" target="_blank" rel="noopener">Resmî site ${icons.arrowUpRight}</a>` : ''}
           </div>
         </div>
@@ -258,7 +259,7 @@ export function gameScene(g, ctx) {
         <div class="score">
           ${ring(g.rating)}
           ${g.favorite ? `<span class="score__fav">${icons.heart} Favorilerimden</span>` : ''}
-          ${compare(g.rating, d.metacritic ? d.metacritic / 10 : null, 'Metacritic', "Metacritic'ten")}
+          ${compare(g.rating, d.critic_score ? d.critic_score / 10 : null, 'Eleştirmenler', 'eleştirmenlerden')}
         </div>
       </section>
 
@@ -266,7 +267,7 @@ export function gameScene(g, ctx) {
       <section class="sc-section">
         <div class="sc-section__head"><h3>Oyundan kareler</h3><span class="eyebrow">${d.screenshots.length} görüntü</span></div>
         <div class="rail shots">
-          ${d.screenshots.map((s) => `<button class="shot" data-shot="${esc(s)}"><img loading="lazy" src="${esc(rawgImg(s, 640))}" alt=""></button>`).join('')}
+          ${d.screenshots.map((s) => `<button class="shot" data-shot="${esc(s)}"><img loading="lazy" src="${esc(igdbImg(s, 'screenshot_big'))}" alt=""></button>`).join('')}
         </div>
       </section>` : ''}
 
@@ -276,7 +277,7 @@ export function gameScene(g, ctx) {
         <div class="recs">
           ${recs.map((r) => `
             <button class="rec" data-go="${r.id}">
-              <div class="rec__img">${fallbackArt(r.title, r.year, hueFromString(r.title))}${r.cover_url ? `<img data-fallback loading="lazy" src="${esc(rawgImg(r.cover_url))}" alt="">` : ''}</div>
+              <div class="rec__img">${fallbackArt(r.title, r.year, hueFromString(r.title))}${r.cover_url ? `<img data-fallback loading="lazy" src="${esc(igdbImg(r.cover_url, 'cover_big'))}" alt="">` : ''}</div>
               <b>${esc(r.title)}</b><small>${(GAME_STATUS[r.status] || {}).short || ''}${r.rating != null ? ` · ${fmtScore(r.rating)}/10` : ''}</small>
             </button>`).join('')}
         </div>
@@ -287,6 +288,7 @@ export function gameScene(g, ctx) {
 }
 
 export function gameAfterScene(el) {
+  filmAfterScene(el); // fragman oynatıcısı aynı
   el.addEventListener('click', (e) => {
     const s = e.target.closest('[data-shot]');
     if (!s) return;

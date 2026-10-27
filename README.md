@@ -1,6 +1,6 @@
 # AKM — Kişisel Arşiv
 
-Filmlerim, oyunlarım ve projelerim tek bir sitede. Cloudflare Pages + D1 üzerinde çalışır; film bilgileri **TMDB**'den (Türkçe ad, afiş, oyuncular, fragman), oyun bilgileri **RAWG**'den otomatik gelir. Her `git push` siteyi otomatik yayınlar.
+Filmlerim, oyunlarım ve projelerim tek bir sitede. Cloudflare Pages + D1 üzerinde çalışır; film bilgileri **TMDB**'den (Türkçe ad, afiş, oyuncular, fragman), oyun bilgileri **IGDB**'den (kutu kapağı, ekran görüntüleri, fragman) otomatik gelir. Her `git push` siteyi otomatik yayınlar.
 
 ```
 public/            Statik site (derleme yok)
@@ -20,7 +20,7 @@ scripts/           Yerel önizleme sunucusu ve örnek veri
 1. **Node.js LTS** kur (nodejs.org) — sadece `wrangler` komutu için.
 2. **API anahtarları**
    - TMDB: themoviedb.org → hesap → Ayarlar → API → *API Read Access Token*
-   - RAWG: rawg.io/apidocs → ücretsiz anahtar
+   - IGDB: dev.twitch.tv/console → Twitch hesabıyla gir (iki adımlı doğrulama açık olmalı) → *Register Your Application* → OAuth Redirect URL: `http://localhost`, Category: *Website Integration*, Client Type: *Confidential* → **Client ID** ve **New Secret** ile Client Secret'ı al
 3. **GitHub**: `akmwebsite` adında boş repo aç, bu klasörü push'la.
 4. **D1 veritabanı**
    ```bash
@@ -34,7 +34,7 @@ scripts/           Yerel önizleme sunucusu ve örnek veri
 5. **Cloudflare Pages**: Workers & Pages → Create → Pages → *Connect to Git* → `akmwebsite`
    - Framework: None · Build command: boş · Output: `public`
    - Settings → Bindings: D1 → `DB` = `akm-db` (wrangler.toml'dan da okunur)
-   - Settings → Variables and Secrets: `TMDB_TOKEN`, `RAWG_KEY` (Secret olarak)
+   - Settings → Variables and Secrets: `TMDB_TOKEN`, `IGDB_CLIENT_ID`, `IGDB_CLIENT_SECRET` (Secret olarak)
 6. **Admin koruması (Cloudflare Access)**: Zero Trust → Access → Applications → Self-hosted
    - Domain: `akmwebsite.pages.dev`, path `admin` ve ikinci kural olarak `api/admin`
    - Policy: Allow → sadece kendi e-postan

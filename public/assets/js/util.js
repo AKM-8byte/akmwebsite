@@ -3,9 +3,8 @@ export const esc = (value) =>
 
 export const tmdbImg = (path, size = 'w500') => (path ? `https://image.tmdb.org/t/p/${size}${path}` : '');
 
-// RAWG görsellerini küçültülmüş sürümden çeker (çok daha hafif).
-export const rawgImg = (url, width = 640) =>
-  url ? url.replace('/media/games/', `/media/crop/600/400/games/`).replace('/media/screenshots/', `/media/resize/${width}/-/screenshots/`) : '';
+// IGDB görsel boyutunu değiştirir: cover_small, cover_big, cover_big_2x, screenshot_big, 720p, 1080p…
+export const igdbImg = (url, size = 'cover_big') => (url ? url.replace(/\/t_[a-z0-9_]+\//, `/t_${size}/`) : '');
 
 export const icons = {
   star: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg>',

@@ -283,7 +283,7 @@ export function createArchive(cfg) {
     apply();
   });
 
-  grid.innerHTML = Array.from({ length: 12 }, () => `<div class="skeleton" style="aspect-ratio:${cfg.type === 'games' ? '16/10' : '2/3'}"></div>`).join('');
+  grid.innerHTML = Array.from({ length: 12 }, () => `<div class="skeleton" style="aspect-ratio:2/3"></div>`).join('');
 
   getList(cfg.type, { onUpdate: setData })
     .then(setData)

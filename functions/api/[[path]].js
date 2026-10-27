@@ -1,7 +1,7 @@
 import { HttpError, json, readBody, toInt, toRating, toDate, toBool, text } from '../_lib/http.js';
 import { requireAdmin } from '../_lib/auth.js';
 import { searchMovies, getMovie } from '../_lib/tmdb.js';
-import { searchGames, getGame } from '../_lib/rawg.js';
+import { searchGames, getGame } from '../_lib/igdb.js';
 
 const GAME_STATUSES = ['bitirdim', 'oynuyorum', 'biraktim', 'oynayacagim'];
 
@@ -204,18 +204,18 @@ function gameFields(body) {
 async function adminGames(db, env, request, method, [id, action]) {
   if (method === 'POST' && !id) {
     const body = await readBody(request);
-    const rawgId = toInt(body.rawg_id);
-    if (!rawgId) throw new HttpError(400, 'rawg_id gerekli');
-    const exists = await db.prepare('SELECT id FROM games WHERE rawg_id = ?').bind(rawgId).first();
+    const igdbId = toInt(body.igdb_id);
+    if (!igdbId) throw new HttpError(400, 'igdb_id gerekli');
+    const exists = await db.prepare('SELECT id FROM games WHERE igdb_id = ?').bind(igdbId).first();
     if (exists) throw new HttpError(409, 'Bu oyun zaten arşivde');
-    const g = await getGame(env, rawgId);
+    const g = await getGame(env, igdbId);
     const r = await db
       .prepare(
-        `INSERT INTO games (rawg_id, title, year, genres, cover_url, details,
+        `INSERT INTO games (igdb_id, title, year, genres, cover_url, details,
            status, platforms, rating, review, favorite, started_at, finished_at)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING *`,
       )
-      .bind(g.rawg_id, g.title, g.year, JSON.stringify(g.genres), g.cover_url, JSON.stringify(g.details), ...gameFields(body))
+      .bind(g.igdb_id, g.title, g.year, JSON.stringify(g.genres), g.cover_url, JSON.stringify(g.details), ...gameFields(body))
       .first();
     return json(gameRow(r), { status: 201 });
   }
@@ -224,9 +224,9 @@ async function adminGames(db, env, request, method, [id, action]) {
   if (!gameId) throw new HttpError(400, 'Oyun id gerekli');
 
   if (method === 'POST' && action === 'refresh') {
-    const cur = await db.prepare('SELECT rawg_id FROM games WHERE id = ?').bind(gameId).first();
-    if (!cur?.rawg_id) throw new HttpError(404, 'Oyun bulunamadı');
-    const g = await getGame(env, cur.rawg_id);
+    const cur = await db.prepare('SELECT igdb_id FROM games WHERE id = ?').bind(gameId).first();
+    if (!cur?.igdb_id) throw new HttpError(404, 'Oyun bulunamadı');
+    const g = await getGame(env, cur.igdb_id);
     const r = await db
       .prepare('UPDATE games SET title = ?, year = ?, genres = ?, cover_url = ?, details = ? WHERE id = ? RETURNING *')
       .bind(g.title, g.year, JSON.stringify(g.genres), g.cover_url, JSON.stringify(g.details), gameId)
@@ -316,7 +316,7 @@ async function adminRoute(db, env, request, method, [type, ...rest], url) {
     if (!q) throw new HttpError(400, 'Arama metni gerekli');
     return json(await searchMovies(env, q, toInt(url.searchParams.get('year'))));
   }
-  if (type === 'rawg' && rest[0] === 'search') {
+  if (type === 'igdb' && rest[0] === 'search') {
     const q = text(url.searchParams.get('q'), 200);
     if (!q) throw new HttpError(400, 'Arama metni gerekli');
     return json(await searchGames(env, q));

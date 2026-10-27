@@ -11,7 +11,8 @@ database_id = "BURAYA_D1_DATABASE_ID"
 # Gizli anahtarlar repoda DEĞİL, Cloudflare panelinde (Settings → Variables and Secrets)
 # veya yerelde .dev.vars dosyasında tutulur:
 #   TMDB_TOKEN          TMDB "API Read Access Token" (v4) ya da v3 API anahtarı
-#   RAWG_KEY            rawg.io API anahtarı
+#   IGDB_CLIENT_ID      Twitch geliştirici uygulamasının Client ID'si (IGDB için)
+#   IGDB_CLIENT_SECRET  aynı uygulamanın Client Secret'ı
 #   ACCESS_TEAM_DOMAIN  ör. akm.cloudflareaccess.com
 #   ACCESS_AUD          Cloudflare Access uygulamasının "Application Audience (AUD) Tag" değeri
 #   DEV_ADMIN           sadece yerelde "1" — admin kontrolünü atlar. Production'da ASLA ekleme.

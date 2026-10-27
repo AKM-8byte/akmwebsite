@@ -2,7 +2,7 @@ import { mountLayout } from '../layout.js';
 import { getList } from '../api.js';
 import { SITE } from '../site.js';
 import { fallbackArt } from '../archive.js';
-import { esc, icons, tmdbImg, rawgImg, hueFromString, imgFallbacks, revealOnScroll } from '../util.js';
+import { esc, icons, tmdbImg, igdbImg, hueFromString, imgFallbacks, revealOnScroll } from '../util.js';
 
 mountLayout('');
 
@@ -26,7 +26,7 @@ function render(films, games, projects) {
   // Afiş duvarı: film ve oyunları karıştırıp 48 kareyi doldur.
   const pool = [
     ...films.filter((f) => f.poster_path).map((f) => tmdbImg(f.poster_path, 'w185')),
-    ...games.filter((g) => g.cover_url).map((g) => rawgImg(g.cover_url, 420)),
+    ...games.filter((g) => g.cover_url).map((g) => igdbImg(g.cover_url, 'cover_big')),
   ];
   if (pool.length) {
     $('#wall').innerHTML = Array.from({ length: 48 }, (_, i) =>
@@ -35,7 +35,7 @@ function render(films, games, projects) {
   }
 
   $('#fan-films').innerHTML = films.slice(0, 3).map((f) => tile(tmdbImg(f.poster_path, 'w185'), f.title_tr, f.year)).join('');
-  $('#fan-games').innerHTML = games.slice(0, 3).map((g) => tile(rawgImg(g.cover_url, 420), g.title, g.year)).join('');
+  $('#fan-games').innerHTML = games.slice(0, 3).map((g) => tile(igdbImg(g.cover_url, 'cover_big'), g.title, g.year)).join('');
   $('#fan-projects').innerHTML = projects.slice(0, 3).map((p) => tile(p.image_url, p.title, (p.date || '').slice(0, 4))).join('');
 
   // "Şu an" satırları

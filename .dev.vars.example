@@ -1,3 +1,4 @@
 TMDB_TOKEN=buraya_tmdb_read_access_token
-RAWG_KEY=buraya_rawg_anahtari
+IGDB_CLIENT_ID=buraya_twitch_client_id
+IGDB_CLIENT_SECRET=buraya_twitch_client_secret
 DEV_ADMIN=1
