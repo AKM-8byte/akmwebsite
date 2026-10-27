@@ -4,3 +4,4 @@ node_modules/
 .DS_Store
 Thumbs.db
 __pycache__/
+data/.d1-seed.sql

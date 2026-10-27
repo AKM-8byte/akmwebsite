@@ -19,10 +19,22 @@ function writeCache(type, data) {
   }
 }
 
+// Filmler Drive tablosundan canlı gelir (/api/films); API'ye ulaşılamazsa son yayınlanan kopya.
+const SOURCES = { films: ['/api/films', '/data/films.json'] };
+
 async function fetchList(type) {
-  const res = await fetch(`/data/${type}.json`, { headers: { accept: 'application/json' } });
-  if (!res.ok) throw new Error(`/data/${type}.json → ${res.status}`);
-  const data = await res.json();
+  let data;
+  for (const url of SOURCES[type] || [`/data/${type}.json`]) {
+    try {
+      const res = await fetch(url, { headers: { accept: 'application/json' } });
+      if (!res.ok || !(res.headers.get('content-type') || '').includes('json')) throw new Error(`${url} → ${res.status}`);
+      data = await res.json();
+      break;
+    } catch (err) {
+      console.warn(err.message);
+    }
+  }
+  if (!data) throw new Error(`${type} yüklenemedi`);
   writeCache(type, data);
   return data;
 }

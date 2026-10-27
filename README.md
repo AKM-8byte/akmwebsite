@@ -5,23 +5,26 @@ Site tamamen statik (Cloudflare Pages). Türkçe ve İngilizce dil seçeneği va
 
 ## Veriler nereden geliyor?
 
-| Bölüm | Kaynak | Otomatik eklenen |
+| Bölüm | Kaynak | Güncelleme |
 |---|---|---|
-| Filmler | Google Drive → *AKM Movies - Film Veritabanı* tablosu | TMDB: TR/EN özet, türler, oyuncular, yönetmen, süre, fragman, arka plan |
-| Oyunlar | `data/oyunlar.csv` | IGDB: kapak, ekran görüntüleri, eleştirmen puanı, fragman |
-| Projeler | `data/projeler.json` | — |
+| Filmler | Google Drive → *AKM Movies - Film Veritabanı* tablosu | **Otomatik.** Site tabloyu `/api/films` ile canlı okur |
+| Oyunlar | `data/oyunlar.csv` | `npm run yayinla` |
+| Projeler | `data/projeler.json` | `npm run yayinla` |
 
-`npm run sync` tabloyu indirir, TMDB/IGDB'den detayları çeker ve `public/data/*.json` dosyalarını yazar.
-Çekilen detaylar `data/cache.json`'da saklanır; sonraki senkronlarda sadece yeni filmler için TMDB'ye gidilir.
+### Filmler nasıl otomatik güncelleniyor?
+- Tabloya film ekle / puanı değiştir → **en geç ~1–2 dakika içinde sitede görünür.** Yayınlamaya gerek yok.
+- Yeni bir film ilk kez göründüğünde `functions/api/films.js` onu TMDB'de bulur; TR/EN özet, türler, oyuncular,
+  yönetmen, süre, fragman ve arka planı çeker ve Cloudflare D1'de (`film_tmdb` tablosu) saklar.
+- Tablo okunamazsa site son yayınlanan kopyaya (`public/data/films.json`) düşer.
+- Tablo **"Bağlantıya sahip herkes → Görüntüleyen"** olarak paylaşılmış kalmalı.
 
-## Yeni film / oyun ekleme
+## Oyun / proje ekleme
 
-1. Filmi Drive'daki tabloya ekle (ya da oyunu `data/oyunlar.csv`'ye).
+1. Oyunu `data/oyunlar.csv`'ye, projeyi `data/projeler.json`'a ekle.
 2. Yayınla:
    ```bash
    npm run yayinla
    ```
-   (= `npm run sync` + Cloudflare'a yükleme)
 
 ### oyunlar.csv sütunları
 `ad, durum, puan, platform, başladım, bitirdim, favori, not`
