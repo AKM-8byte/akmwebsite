@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AKM Ekleme Aracı</title>
+<style>
+  :root { --bg:#14161a; --card:#1d2026; --line:#2c313a; --text:#e8eaee; --mute:#8b93a1; --accent:#f0b429; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 system-ui, "Segoe UI", sans-serif; }
+  main { max-width:960px; margin:0 auto; padding:24px 16px 80px; }
+  h1 { font-size:22px; margin:0 0 4px; }
+  p.sub { color:var(--mute); margin:0 0 20px; }
+  .tabs { display:flex; gap:8px; margin-bottom:16px; }
+  .tabs button { background:var(--card); color:var(--text); border:1px solid var(--line); padding:8px 18px; border-radius:8px; cursor:pointer; font:inherit; }
+  .tabs button.on { border-color:var(--accent); color:var(--accent); }
+  section[hidden] { display:none; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:16px; }
+  .card h2 { font-size:16px; margin:0 0 12px; }
+  form { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; }
+  label { display:flex; flex-direction:column; gap:4px; font-size:13px; color:var(--mute); }
+  label.wide { grid-column:1/-1; }
+  input, select, textarea { background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font:inherit; }
+  input:focus, select:focus, textarea:focus { outline:2px solid var(--accent); outline-offset:-1px; }
+  label.check { flex-direction:row; align-items:center; gap:8px; color:var(--text); }
+  button.btn { background:var(--accent); color:#1a1300; border:0; padding:9px 16px; border-radius:8px; font:inherit; font-weight:600; cursor:pointer; }
+  button.ghost { background:transparent; color:var(--text); border:1px solid var(--line); }
+  .row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th, td { text-align:left; padding:8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--mute); font-weight:500; font-size:12px; }
+  td button { background:none; border:0; color:#ff7b72; cursor:pointer; font:inherit; }
+  .empty { color:var(--mute); padding:12px 0; }
+  .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--accent); color:#1a1300; padding:8px 16px; border-radius:8px; font-weight:600; opacity:0; transition:opacity .2s; pointer-events:none; }
+  .toast.on { opacity:1; }
+  @media (max-width:600px) { .hide-sm { display:none; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>AKM Ekleme Aracı</h1>
+  <p class="sub">Yazdıkların bu tarayıcıda otomatik saklanır. Bitince <b>CSV'yi indir</b> ya da <b>Kopyala</b> de, çıkan metni Claude'a ver.</p>
+
+  <div class="tabs">
+    <button data-tab="games" class="on">Oyunlar</button>
+    <button data-tab="projects">Projeler</button>
+  </div>
+
+  <!-- OYUNLAR -->
+  <section id="games">
+    <div class="card">
+      <h2>Oyun ekle</h2>
+      <form id="gameForm">
+        <label>Ad *<input name="ad" required></label>
+        <label>Durum
+          <select name="durum"><option>bitirdim</option><option>oynuyorum</option><option>bıraktım</option><option>sırada</option></select>
+        </label>
+        <label>Puan (5 üzerinden)<input name="puan" type="number" min="0" max="5" step="0.5"></label>
+        <label>Platform<input name="platform" placeholder="PC; PlayStation 5"></label>
+        <label>Başladım<input name="baslad" type="date"></label>
+        <label>Bitirdim<input name="bitir" type="date"></label>
+        <label class="check"><input name="favori" type="checkbox"> Favori</label>
+        <label class="wide">Not<input name="not"></label>
+        <div class="row"><button class="btn">Ekle</button></div>
+      </form>
+    </div>
+    <div class="card">
+      <h2>Toplu ekle (her satıra bir oyun adı)</h2>
+      <label>Adlar<textarea id="gameBulk" rows="4" placeholder="Hades&#10;Elden Ring&#10;Celeste"></textarea></label>
+      <div class="row" style="margin-top:10px"><select id="bulkStatus"><option>bitirdim</option><option>oynuyorum</option><option>bıraktım</option><option>sırada</option></select><button class="btn ghost" id="gameBulkBtn" type="button">Hepsini ekle</button></div>
+    </div>
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:8px"><h2 style="margin:0">Listem (<span id="gameCount">0</span>)</h2>
+        <div class="row"><button class="btn" data-dl="games">CSV'yi indir</button><button class="btn ghost" data-copy="games">Kopyala</button><button class="btn ghost" data-clear="games">Temizle</button></div></div>
+      <div id="gameList"></div>
+    </div>
+  </section>
+
+  <!-- PROJELER -->
+  <section id="projects" hidden>
+    <div class="card">
+      <h2>Proje ekle</h2>
+      <form id="projForm">
+        <label>Başlık *<input name="baslik" required></label>
+        <label>Tarih<input name="tarih" type="date"></label>
+        <label class="wide">Özet (Türkçe)<input name="ozet_tr"></label>
+        <label class="wide">Özet (İngilizce, boşsa Türkçesi kullanılır)<input name="ozet_en"></label>
+        <label class="wide">Açıklama (Türkçe)<textarea name="acik_tr" rows="3"></textarea></label>
+        <label class="wide">Açıklama (İngilizce)<textarea name="acik_en" rows="3"></textarea></label>
+        <label>Teknolojiler<input name="tech" placeholder="HTML; CSS; JavaScript"></label>
+        <label>Görsel URL<input name="gorsel"></label>
+        <label>Canlı URL<input name="canli"></label>
+        <label>GitHub URL<input name="github"></label>
+        <label class="check"><input name="one" type="checkbox"> Öne çıkan</label>
+        <div class="row"><button class="btn">Ekle</button></div>
+      </form>
+    </div>
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:8px"><h2 style="margin:0">Projelerim (<span id="projCount">0</span>)</h2>
+        <div class="row"><button class="btn" data-dl="projects">CSV'yi indir</button><button class="btn ghost" data-copy="projects">Kopyala</button><button class="btn ghost" data-clear="projects">Temizle</button></div></div>
+      <div id="projList"></div>
+    </div>
+  </section>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+const store = {
+  get(k) { try { return JSON.parse(localStorage.getItem('akm-ekle-' + k)) || []; } catch { return []; } },
+  set(k, v) { try { localStorage.setItem('akm-ekle-' + k, JSON.stringify(v)); } catch {} },
+};
+const data = { games: store.get('games'), projects: store.get('projects') };
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const csvCell = (v) => { v = String(v ?? ''); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+
+const SPEC = {
+  games: {
+    head: ['Ad', 'Durum', 'Puan', 'Platform', 'Başladım', 'Bitirdim', 'Favori', 'Not'],
+    row: (g) => [g.ad, g.durum, g.puan, g.platform, g.baslad, g.bitir, g.favori ? 'evet' : '', g.not],
+    file: 'oyunlar.csv',
+  },
+  projects: {
+    head: ['Başlık', 'Slug', 'Özet TR', 'Özet EN', 'Açıklama TR', 'Açıklama EN', 'Görsel URL', 'Teknolojiler', 'Canlı URL', 'GitHub URL', 'Öne Çıkan', 'Tarih'],
+    row: (p) => [p.baslik, '', p.ozet_tr, p.ozet_en, p.acik_tr, p.acik_en, p.gorsel, p.tech, p.canli, p.github, p.one ? 'evet' : '', p.tarih],
+    file: 'projeler.csv',
+  },
+};
+const toCsv = (k) => [SPEC[k].head, ...data[k].map(SPEC[k].row)].map((r) => r.map(csvCell).join(',')).join('\n') + '\n';
+
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 1600); }
+
+function render() {
+  $('#gameCount').textContent = data.games.length;
+  $('#projCount').textContent = data.projects.length;
+  $('#gameList').innerHTML = data.games.length ? `<table><tr><th>Ad</th><th>Durum</th><th>Puan</th><th class="hide-sm">Platform</th><th></th></tr>${
+    data.games.map((g, i) => `<tr><td>${esc(g.ad)}${g.favori ? ' ♥' : ''}</td><td>${esc(g.durum)}</td><td>${esc(g.puan)}</td><td class="hide-sm">${esc(g.platform)}</td><td><button data-del="games" data-i="${i}">Sil</button></td></tr>`).join('')}</table>` : '<p class="empty">Henüz oyun yok.</p>';
+  $('#projList').innerHTML = data.projects.length ? `<table><tr><th>Başlık</th><th class="hide-sm">Teknolojiler</th><th class="hide-sm">Tarih</th><th></th></tr>${
+    data.projects.map((p, i) => `<tr><td>${esc(p.baslik)}${p.one ? ' ★' : ''}</td><td class="hide-sm">${esc(p.tech)}</td><td class="hide-sm">${esc(p.tarih)}</td><td><button data-del="projects" data-i="${i}">Sil</button></td></tr>`).join('')}</table>` : '<p class="empty">Henüz proje yok.</p>';
+  store.set('games', data.games); store.set('projects', data.projects);
+}
+
+const formData = (form) => { const o = {}; new FormData(form).forEach((v, k) => (o[k] = v.trim())); form.querySelectorAll('input[type=checkbox]').forEach((c) => (o[c.name] = c.checked)); return o; };
+
+$('#gameForm').addEventListener('submit', (e) => { e.preventDefault(); data.games.push(formData(e.target)); e.target.reset(); render(); toast('Oyun eklendi'); });
+$('#projForm').addEventListener('submit', (e) => { e.preventDefault(); data.projects.push(formData(e.target)); e.target.reset(); render(); toast('Proje eklendi'); });
+$('#gameBulkBtn').addEventListener('click', () => {
+  const names = $('#gameBulk').value.split(/\r?\n/).map((s) => s.trim()).filter(Boolean);
+  names.forEach((ad) => data.games.push({ ad, durum: $('#bulkStatus').value }));
+  $('#gameBulk').value = ''; render(); toast(`${names.length} oyun eklendi`);
+});
+
+document.addEventListener('click', async (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.tab) {
+    document.querySelectorAll('.tabs button').forEach((x) => x.classList.toggle('on', x === b));
+    ['games', 'projects'].forEach((id) => ($('#' + id).hidden = id !== b.dataset.tab));
+  } else if (b.dataset.del) { data[b.dataset.del].splice(+b.dataset.i, 1); render(); }
+  else if (b.dataset.dl) {
+    const k = b.dataset.dl, a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['﻿' + toCsv(k)], { type: 'text/csv;charset=utf-8' }));
+    a.download = SPEC[k].file; a.click(); toast('İndirildi');
+  } else if (b.dataset.copy) {
+    try { await navigator.clipboard.writeText(toCsv(b.dataset.copy)); toast('Kopyalandı'); }
+    catch { toast('Kopyalanamadı, indirmeyi dene'); }
+  } else if (b.dataset.clear) {
+    if (confirm('Bu listedeki her şey silinsin mi?')) { data[b.dataset.clear] = []; render(); }
+  }
+});
+render();
+</script>
+</body>
+</html>
