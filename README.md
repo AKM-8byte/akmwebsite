@@ -44,7 +44,11 @@ scripts/           Yerel önizleme sunucusu ve örnek veri
 ## Günlük kullanım
 
 - `/admin` → film/oyun adını ara → seç → puan + not → **Arşive ekle**. Gerisini site halleder.
-- Kod değişikliği: düzenle → `git push` → Cloudflare 1 dakikada yayınlar.
+- Kod değişikliği: düzenle → `git push` (yedek) → yayınla:
+  ```bash
+  npx wrangler pages deploy --branch main
+  ```
+  Pages projesi wrangler ile (Direct Upload) oluşturuldu; GitHub'a bağlı değil, yayın bu komutla yapılır.
 - Kişisel bilgiler (isim, hakkımda, linkler): `public/assets/js/site.js`
 
 ## Yerelde çalıştırma
