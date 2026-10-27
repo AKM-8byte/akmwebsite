@@ -1,8 +1,8 @@
 // AKM veri senkronizasyonu
-//   Canlı sitede filmler zaten /api/films ile Drive'dan otomatik okunur. Bu betik:
+//   Canlı sitede filmler, oyunlar ve projeler /api/* ile Drive tablolarından otomatik okunur. Bu betik:
 //   - public/data/*.json yedek kopyalarını üretir (tablo okunamazsa site bunlara düşer),
-//   - oyunları IGDB'den zenginleştirir, projeleri kopyalar,
-//   - --d1 ile yerel TMDB önbelleğini Cloudflare D1'e yükler.
+//   - yeni film/oyun detaylarını TMDB/IGDB'den çekip yerel önbelleğe yazar,
+//   - --d1 ile yerel TMDB/IGDB önbelleğini Cloudflare D1'e yükler.
 //
 //   Kullanım:  node scripts/sync.mjs            (tablo + TMDB/IGDB)
 //              node scripts/sync.mjs --offline  (internete çıkmadan, sadece önbellekten)
@@ -18,8 +18,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import {
-  SHEET_CSV, norm, parseCsv, rowsToObjects, toNum, yes, stripTags, sheetRows, filmKey, tmdbClient, fetchMovie, buildFilm,
+  SHEET_CSV, sheetRows, filmKey, tmdbClient, fetchMovie, buildFilm,
 } from '../functions/_lib/films.js';
+import { GAMES_CSV, gameSheetRows, gameKey, igdbClient, gameDetails, buildGame } from '../functions/_lib/games.js';
+import { PROJECTS_CSV, projectSheetRows, buildProject } from '../functions/_lib/projects.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DATA = path.join(ROOT, 'data');
@@ -54,88 +56,32 @@ async function pool(items, size, fn) {
   return out;
 }
 
-// ---------------- IGDB ----------------
-
-function igdbClient(id, secret) {
-  if (!id || !secret) return null;
-  let token = null;
-  return async (endpoint, body) => {
-    if (!token) {
-      const u = new URL('https://id.twitch.tv/oauth2/token');
-      u.search = new URLSearchParams({ client_id: id, client_secret: secret, grant_type: 'client_credentials' });
-      const r = await fetch(u, { method: 'POST' });
-      if (!r.ok) throw new Error(`Twitch giriş hatası ${r.status}`);
-      token = (await r.json()).access_token;
-    }
-    const res = await fetch(`https://api.igdb.com/v4/${endpoint}`, {
-      method: 'POST',
-      headers: { 'Client-ID': id, authorization: `Bearer ${token}`, accept: 'application/json' },
-      body,
-    });
-    if (!res.ok) throw new Error(`IGDB ${res.status}`);
-    return res.json();
-  };
-}
-
-const igdbImg = (imageId, size) => (imageId ? `https://images.igdb.com/igdb/image/upload/t_${size}/${imageId}.jpg` : null);
-const platformName = (p) => (p.name.startsWith('PC (') ? 'PC' : p.name);
-
-async function gameDetails(igdb, title) {
-  const q = title.replace(/["\\]/g, ' ');
-  const fields = `fields name, url, summary, first_release_date, aggregated_rating, total_rating,
-    cover.image_id, artworks.image_id, screenshots.image_id, videos.video_id, genres.name, platforms.name,
-    websites.url, websites.category, involved_companies.developer, involved_companies.company.name;`;
-  const hits = await igdb('games', `search "${q}"; ${fields} where version_parent = null; limit 5;`);
-  const g = hits.find((h) => norm(h.name) === norm(title)) || hits[0];
-  if (!g) return null;
-  const backdrop = g.artworks?.[0]?.image_id || g.screenshots?.[0]?.image_id;
-  return {
-    igdb_id: g.id,
-    title: g.name,
-    year: g.first_release_date ? new Date(g.first_release_date * 1000).getUTCFullYear() : null,
-    genres: (g.genres || []).map((x) => x.name),
-    cover_url: igdbImg(g.cover?.image_id, 'cover_big'),
-    details: {
-      released: g.first_release_date ? new Date(g.first_release_date * 1000).toISOString().slice(0, 10) : null,
-      critic_score: g.aggregated_rating ? Math.round(g.aggregated_rating) : null,
-      user_score: g.total_rating ? Math.round(g.total_rating) : null,
-      developers: (g.involved_companies || []).filter((c) => c.developer).map((c) => c.company?.name).filter(Boolean),
-      all_platforms: [...new Set((g.platforms || []).map(platformName))],
-      description: (g.summary || '').slice(0, 1200) || null,
-      website: (g.websites || []).find((w) => w.category === 1)?.url || null,
-      igdb_url: g.url || null,
-      backdrop: igdbImg(backdrop, '1080p'),
-      trailer: g.videos?.[0]?.video_id || null,
-      screenshots: (g.screenshots || []).slice(0, 8).map((s) => igdbImg(s.image_id, '1080p')),
-    },
-  };
-}
-
 // ---------------- akış ----------------
 
-async function readSheet() {
+// Tabloyu Drive'dan indirir ve yerel yedeğe yazar; indirilemezse yerel yedeği kullanır.
+async function readSheet(url, localName) {
+  const local = path.join(DATA, localName);
   if (!OFFLINE) {
     try {
-      const res = await fetch(SHEET_CSV, { redirect: 'follow' });
+      const res = await fetch(url, { redirect: 'follow' });
       const type = res.headers.get('content-type') || '';
       if (res.ok && type.includes('text/csv')) {
         const text = await res.text();
-        await writeFile(path.join(DATA, 'filmler.csv'), text);
-        console.log('✓ Drive tablosu indirildi');
+        await writeFile(local, text);
+        console.log(`✓ Drive tablosu indirildi (${localName})`);
         return text;
       }
-      console.warn('! Drive tablosu indirilemedi (tablo "bağlantıya sahip herkes görüntüleyebilir" olmalı). data/filmler.csv kullanılıyor.');
+      console.warn(`! ${localName}: tablo indirilemedi ("bağlantıya sahip herkes görüntüleyebilir" olmalı). Yerel kopya kullanılıyor.`);
     } catch (err) {
-      console.warn(`! Drive tablosu indirilemedi: ${err.message}. data/filmler.csv kullanılıyor.`);
+      console.warn(`! ${localName}: tablo indirilemedi: ${err.message}. Yerel kopya kullanılıyor.`);
     }
   }
-  const local = path.join(DATA, 'filmler.csv');
-  if (!existsSync(local)) throw new Error('Film tablosu yok: Drive paylaşımını aç ya da data/filmler.csv ekle.');
+  if (!existsSync(local)) throw new Error(`${localName} yok: Drive paylaşımını aç ya da dosyayı ekle.`);
   return readFile(local, 'utf8');
 }
 
 async function syncFilms(tmdb, cache) {
-  const rows = sheetRows(await readSheet());
+  const rows = sheetRows(await readSheet(SHEET_CSV, 'filmler.csv'));
   let fetched = 0;
   const films = await pool(rows, 6, async (r, i) => {
     const key = filmKey(r);
@@ -154,70 +100,42 @@ async function syncFilms(tmdb, cache) {
   return films;
 }
 
-// Yerel TMDB önbelleğini D1'e yükler; canlı API yeni filmler dışında TMDB'ye gitmez.
+// Yerel TMDB/IGDB önbelleğini D1'e yükler; canlı API yeni kayıtlar dışında dış servise gitmez.
 function pushCacheToD1(cache) {
   const q = (s) => `'${String(s).replace(/'/g, "''")}'`;
-  const sql = Object.entries(cache.films)
-    .map(([key, d]) => `INSERT OR REPLACE INTO film_tmdb (key, data) VALUES (${q(key)}, ${q(JSON.stringify(d))});`)
-    .join('\n');
+  const insert = (table, entries) =>
+    Object.entries(entries).map(([key, d]) => `INSERT OR REPLACE INTO ${table} (key, data) VALUES (${q(key)}, ${q(JSON.stringify(d))});`);
+  const sql = [...insert('film_tmdb', cache.films), ...insert('game_igdb', cache.games)].join('\n');
   const file = path.join(DATA, '.d1-seed.sql');
   return writeFile(file, sql).then(() => {
     execFileSync('npx', ['--yes', 'wrangler@4', 'd1', 'execute', 'akm-db', '--remote', '--yes', '--file=data/.d1-seed.sql'], {
       cwd: ROOT, stdio: 'inherit', shell: true,
     });
-    console.log(`✓ ${Object.keys(cache.films).length} film detayı D1'e yüklendi`);
+    console.log(`✓ ${Object.keys(cache.films).length} film, ${Object.keys(cache.games).length} oyun detayı D1'e yüklendi`);
   });
 }
 
 async function syncGames(igdb, cache) {
-  const file = path.join(DATA, 'oyunlar.csv');
-  if (!existsSync(file)) return [];
-  const STATUS = { bitirdim: 'bitirdim', oynuyorum: 'oynuyorum', biraktim: 'biraktim', 'bıraktım': 'biraktim', oynayacagim: 'oynayacagim', 'oynayacağım': 'oynayacagim', sirada: 'oynayacagim', 'sırada': 'oynayacagim' };
-  const rows = rowsToObjects(parseCsv(await readFile(file, 'utf8')), {
-    title: ['ad', 'oyun', 'title'],
-    status: ['durum', 'status'],
-    rating: ['puan', 'rating'],
-    platforms: ['platform', 'platformlar'],
-    started_at: ['başladım', 'basladim', 'başlangıç'],
-    finished_at: ['bitirdim', 'bitiş', 'bitis'],
-    favorite: ['favori', 'beğenildi'],
-    review: ['not', 'yorum', 'review'],
-  }).filter((r) => r.title);
-
+  const rows = gameSheetRows(await readSheet(GAMES_CSV, 'oyunlar.csv'));
   const games = await pool(rows, 3, async (r, i) => {
-    const key = norm(r.title);
-    let d = cache.games[key];
-    if (!d && igdb && !OFFLINE) {
+    const key = gameKey(r);
+    if (!cache.games[key] && igdb && !OFFLINE) {
       try {
-        d = (await gameDetails(igdb, r.title)) || { igdb_id: null };
-        cache.games[key] = d;
+        cache.games[key] = await gameDetails(igdb, r.title);
       } catch (err) {
         console.warn(`  ! ${r.title}: ${err.message}`);
       }
     }
-    d = d || {};
-    const rating = toNum(r.rating);
-    const date = (v) => (/^\d{4}-\d{2}-\d{2}$/.test(v) ? v : null);
-    return {
-      id: i + 1,
-      order: i,
-      igdb_id: d.igdb_id || null,
-      title: d.title || r.title,
-      year: d.year || null,
-      genres: d.genres || [],
-      cover_url: d.cover_url || null,
-      status: STATUS[norm(r.status)] || STATUS[r.status?.toLowerCase()] || 'bitirdim',
-      platforms: r.platforms ? r.platforms.split(/[;/]/).map((p) => p.trim()).filter(Boolean) : [],
-      rating: rating == null ? null : rating * 2,
-      review: stripTags(r.review),
-      favorite: yes(r.favorite),
-      started_at: date(r.started_at),
-      finished_at: date(r.finished_at),
-      details: d.details || {},
-    };
+    return buildGame(r, cache.games[key], i);
   });
   console.log(`✓ ${games.length} oyun`);
   return games;
+}
+
+async function syncProjects() {
+  const projects = projectSheetRows(await readSheet(PROJECTS_CSV, 'projeler.csv')).map(buildProject);
+  console.log(`✓ ${projects.length} proje`);
+  return projects;
 }
 
 async function main() {
@@ -234,7 +152,7 @@ async function main() {
 
   const films = await syncFilms(tmdb, cache);
   const games = await syncGames(igdb, cache);
-  const projects = JSON.parse(await readFile(path.join(DATA, 'projeler.json'), 'utf8'));
+  const projects = await syncProjects();
 
   const write = (name, data) => writeFile(path.join(OUT, `${name}.json`), JSON.stringify(data));
   await Promise.all([write('films', films), write('games', games), write('projects', projects)]);

@@ -5,38 +5,36 @@ Site tamamen statik (Cloudflare Pages). Türkçe ve İngilizce dil seçeneği va
 
 ## Veriler nereden geliyor?
 
-| Bölüm | Kaynak | Güncelleme |
+Hepsi Google Drive'daki **AKM Web Sitesi Veritabanı** klasöründeki tablolardan. Tabloya satır ekle → **en geç ~1–2 dakika içinde sitede görünür, yayınlamaya gerek yok.**
+
+| Bölüm | Tablo | Ek bilgi |
 |---|---|---|
-| Filmler | Google Drive → *AKM Movies - Film Veritabanı* tablosu | **Otomatik.** Site tabloyu `/api/films` ile canlı okur |
-| Oyunlar | `data/oyunlar.csv` | `npm run yayinla` |
-| Projeler | `data/projeler.json` | `npm run yayinla` |
+| Filmler | *AKM Movies - Film Veritabanı* | TMDB (afiş, özet, oyuncular, fragman) → D1 `film_tmdb` |
+| Oyunlar | *AKM Games - Oyun Veritabanı* | IGDB (kapak, tür, geliştirici, fragman) → D1 `game_igdb` |
+| Projeler | *AKM Projects - Proje Veritabanı* | yok |
 
-### Filmler nasıl otomatik güncelleniyor?
-- Tabloya film ekle / puanı değiştir → **en geç ~1–2 dakika içinde sitede görünür.** Yayınlamaya gerek yok.
-- Yeni bir film ilk kez göründüğünde `functions/api/films.js` onu TMDB'de bulur; TR/EN özet, türler, oyuncular,
-  yönetmen, süre, fragman ve arka planı çeker ve Cloudflare D1'de (`film_tmdb` tablosu) saklar.
-- Tablo okunamazsa site son yayınlanan kopyaya (`public/data/films.json`) düşer.
-- Tablo **"Bağlantıya sahip herkes → Görüntüleyen"** olarak paylaşılmış kalmalı.
+- Yeni bir film/oyun ilk kez göründüğünde ek bilgisi otomatik çekilip D1'de saklanır.
+- Tablo okunamazsa site son yayınlanan kopyaya (`public/data/*.json`) düşer.
+- Üç tablo da **"Bağlantıya sahip herkes → Görüntüleyen"** olarak paylaşılmış kalmalı.
+- Tablo kimlikleri: `functions/_lib/films.js`, `games.js`, `projects.js`.
 
-## Oyun / proje ekleme
+### Oyun tablosu sütunları
+`Ad, Durum, Puan, Platform, Başladım, Bitirdim, Favori, Not`
+- Durum: `bitirdim` · `oynuyorum` · `bıraktım` · `sırada`
+- Puan: 5 üzerinden (4.5 gibi) · Tarih: `2026-10-27` · Favori: `evet`
+- Birden fazla platform: `PC; PlayStation 5`
 
-1. Oyunu `data/oyunlar.csv`'ye, projeyi `data/projeler.json`'a ekle.
-2. Yayınla:
-   ```bash
-   npm run yayinla
-   ```
+### Proje tablosu sütunları
+`Başlık, Slug, Özet TR, Özet EN, Açıklama TR, Açıklama EN, Görsel URL, Teknolojiler, Canlı URL, GitHub URL, Öne Çıkan, Tarih`
+- Teknolojiler: `HTML; CSS; JavaScript` · Öne Çıkan: `evet` · Slug boşsa başlıktan üretilir.
 
-### oyunlar.csv sütunları
-`ad, durum, puan, platform, başladım, bitirdim, favori, not`
-- durum: `bitirdim` · `oynuyorum` · `bıraktım` · `sırada`
-- puan: 5 üzerinden (4.5 gibi)
-- tarihler: `2026-10-27` biçiminde
-- birden fazla platform: `PC; PlayStation 5`
+### Yedek kopyaları güncellemek / kodu yayınlamak
+`npm run yayinla` (tabloları indirir, yedek kopyaları yeniler, siteyi yükler). Sadece içerik eklemek için gerekmez.
 
 ## Kurulum (bir kez)
 
 - **Node.js LTS** kurulu olmalı.
-- Drive tablosu **"Bağlantıya sahip herkes → Görüntüleyen"** olarak paylaşılmalı (sync tabloyu böyle indirir).
+- Drive tabloları **"Bağlantıya sahip herkes → Görüntüleyen"** olarak paylaşılmalı.
 - `.dev.vars` dosyasına (repoya girmez) anahtarları yaz:
   ```
   TMDB_TOKEN=...            themoviedb.org → Ayarlar → API → API Read Access Token

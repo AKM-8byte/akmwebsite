@@ -7,3 +7,10 @@ CREATE TABLE IF NOT EXISTS film_tmdb (
   data       TEXT NOT NULL,
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+-- Drive tablosundaki her oyun için IGDB'den çekilen detaylar (anahtar: normalleştirilmiş ad).
+CREATE TABLE IF NOT EXISTS game_igdb (
+  key        TEXT PRIMARY KEY,
+  data       TEXT NOT NULL,
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);

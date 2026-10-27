@@ -19,8 +19,12 @@ function writeCache(type, data) {
   }
 }
 
-// Filmler Drive tablosundan canlı gelir (/api/films); API'ye ulaşılamazsa son yayınlanan kopya.
-const SOURCES = { films: ['/api/films', '/data/films.json'] };
+// Film, oyun ve projeler Drive tablosundan canlı gelir (/api/*); API'ye ulaşılamazsa son yayınlanan kopya.
+const SOURCES = {
+  films: ['/api/films', '/data/films.json'],
+  games: ['/api/games', '/data/games.json'],
+  projects: ['/api/projects', '/data/projects.json'],
+};
 
 async function fetchList(type) {
   let data;
