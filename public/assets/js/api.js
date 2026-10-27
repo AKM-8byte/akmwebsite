@@ -1,3 +1,4 @@
+import { href } from './util.js';
 // Okuma katmanı: önce tarayıcıdaki kopyayı anında göster, arkadan tazesini çek.
 const PREFIX = 'akm:v2:';
 const FRESH_MS = 60 * 1000;
@@ -20,15 +21,15 @@ function writeCache(type, data) {
 }
 
 // Film, oyun ve projeler Drive tablosundan canlı gelir (/api/*); API'ye ulaşılamazsa son yayınlanan kopya.
-const SOURCES = {
-  films: ['/api/films', '/data/films.json'],
-  games: ['/api/games', '/data/games.json'],
-  projects: ['/api/projects', '/data/projects.json'],
-};
+// GitHub Pages sunucu kodu çalıştıramaz: orada sadece GitHub Actions'ın ürettiği JSON okunur.
+const HAS_API = !location.hostname.endsWith('github.io');
+const SOURCES = Object.fromEntries(
+  ['films', 'games', 'projects'].map((t) => [t, [HAS_API && `/api/${t}`, `/data/${t}.json`].filter(Boolean).map(href)]),
+);
 
 async function fetchList(type) {
   let data;
-  for (const url of SOURCES[type] || [`/data/${type}.json`]) {
+  for (const url of SOURCES[type] || [href(`/data/${type}.json`)]) {
     try {
       const res = await fetch(url, { headers: { accept: 'application/json' } });
       if (!res.ok || !(res.headers.get('content-type') || '').includes('json')) throw new Error(`${url} → ${res.status}`);

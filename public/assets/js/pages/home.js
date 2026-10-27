@@ -3,7 +3,7 @@ import { getList } from '../api.js';
 import { SITE } from '../site.js';
 import { fallbackArt } from '../archive.js';
 import { filmTitle } from '../scenes.js';
-import { esc, icons, tmdbImg, igdbImg, hueFromString, imgFallbacks, revealOnScroll } from '../util.js';
+import { esc, href, icons, tmdbImg, igdbImg, hueFromString, imgFallbacks, revealOnScroll } from '../util.js';
 import { t, L } from '../i18n.js';
 
 mountLayout('');
@@ -46,9 +46,9 @@ function render(films, games, projects) {
   const lastFilm = films[0];
   const lastProject = projects[0];
   const rows = [
-    lastFilm && [t('now.film'), filmTitle(lastFilm), `/filmler/?film=${lastFilm.id}`],
-    playing && [t('now.game'), playing.title, `/oyunlar/?oyun=${playing.id}`],
-    lastProject && [t('now.project'), lastProject.title, `/projeler/?p=${encodeURIComponent(lastProject.slug)}`],
+    lastFilm && [t('now.film'), filmTitle(lastFilm), href(`/filmler/?film=${lastFilm.id}`)],
+    playing && [t('now.game'), playing.title, href(`/oyunlar/?oyun=${playing.id}`)],
+    lastProject && [t('now.project'), lastProject.title, href(`/projeler/?p=${encodeURIComponent(lastProject.slug)}`)],
   ].filter(Boolean);
   $('#now').innerHTML = rows
     .map(([k, v, href]) => `<a class="now__row" href="${href}"><small>${k}</small><b>${esc(v)}</b>${icons.arrow}</a>`)

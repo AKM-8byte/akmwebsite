@@ -1,0 +1,53 @@
+# GitHub Pages yayını: Drive tablolarını okur, TMDB/IGDB detaylarını ekler, siteyi yayınlar.
+# Her push'ta, 15 dakikada bir ve elle (Actions → "Siteyi yayınla" → Run workflow) çalışır.
+name: Siteyi yayınla
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # TMDB/IGDB detay önbelleği çalıştırmalar arasında saklanır: sadece yeni film/oyunlar için API'ye gidilir.
+      - uses: actions/cache@v4
+        with:
+          path: data/cache.json
+          key: akm-cache-${{ github.run_id }}
+          restore-keys: akm-cache-
+
+      - name: Drive tablolarını ve detayları çek
+        run: node scripts/sync.mjs
+        env:
+          TMDB_TOKEN: ${{ secrets.TMDB_TOKEN }}
+          IGDB_CLIENT_ID: ${{ secrets.IGDB_CLIENT_ID }}
+          IGDB_CLIENT_SECRET: ${{ secrets.IGDB_CLIENT_SECRET }}
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - id: deployment
+        uses: actions/deploy-pages@v4

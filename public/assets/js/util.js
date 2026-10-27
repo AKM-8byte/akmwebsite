@@ -1,5 +1,12 @@
 import { t, locale } from './i18n.js';
 
+// Sitenin kök adresi: hem akmwebsite.pages.dev/ hem kullanici.github.io/akmwebsite/ altında çalışsın diye.
+export const ROOT = new URL('../../', import.meta.url);
+export const href = (path) => {
+  const u = new URL(path.replace(/^\//, ''), ROOT);
+  return u.pathname + u.search + u.hash;
+};
+
 export const esc = (value) =>
   String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 

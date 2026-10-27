@@ -1,5 +1,5 @@
 import { SITE } from './site.js';
-import { esc } from './util.js';
+import { esc, href } from './util.js';
 import { t, lang, setLang, applyI18n } from './i18n.js';
 
 const NAV = [
@@ -17,14 +17,14 @@ export function mountLayout(active) {
     header.className = 'site-header';
     header.innerHTML = `
       <div class="wrap">
-        <a class="brand" href="/" aria-label="${esc(SITE.short)} ${t('nav.home')}">
+        <a class="brand" href="${href('/')}" aria-label="${esc(SITE.short)} ${t('nav.home')}">
           <span class="brand__mark">${esc(SITE.short.slice(0, 1))}</span>
           <span class="brand__text"><b>${esc(SITE.short)}</b> <span>/ ${t('nav.archive')}</span></span>
         </a>
         <div class="header-right">
           <nav class="nav" id="site-nav" aria-label="Menu">
             ${NAV.map(
-              (n, i) => `<a href="${n.href}" ${n.key === active ? 'aria-current="page"' : ''}>
+              (n, i) => `<a href="${href(n.href)}" ${n.key === active ? 'aria-current="page"' : ''}>
                 <span class="nav__num">0${i + 1}</span>${t(n.label)}</a>`,
             ).join('')}
           </nav>
@@ -61,7 +61,7 @@ export function mountLayout(active) {
         <div class="site-footer__row">
           <span>© ${new Date().getFullYear()} ${esc(SITE.name)} · ${t('footer.tagline')}</span>
           <nav aria-label="Footer">
-            ${NAV.slice(0, 3).map((n) => `<a href="${n.href}">${t(n.label)}</a>`).join('')}
+            ${NAV.slice(0, 3).map((n) => `<a href="${href(n.href)}">${t(n.label)}</a>`).join('')}
             ${SITE.links.map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join('')}
           </nav>
         </div>
