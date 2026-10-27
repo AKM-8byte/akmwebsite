@@ -1,4 +1,0 @@
-[
-  {"id":2,"title":"AKM Arşiv","slug":"akm-arsiv","summary":"Film, oyun ve projelerimi tek yerde topladığım kişisel site.","description":"Cloudflare Pages, D1 veritabanı ve Pages Functions üzerinde çalışıyor.\nFilm bilgileri TMDB'den, oyun bilgileri IGDB'den otomatik geliyor.","image_url":null,"tech":["HTML","CSS","JavaScript","Cloudflare"],"live_url":null,"github_url":null,"featured":true,"date":"2026-10-27","created_at":"2026-10-27"},
-  {"id":1,"title":"AKM Cinema","slug":"akm-cinema","summary":"Google Sheets'ten beslenen ilk film arşivim.","description":"Google Apps Script ile yazdığım ilk film arşivi. Bu sitenin fikri buradan çıktı.","image_url":null,"tech":["Google Apps Script","Google Sheets"],"live_url":null,"github_url":null,"featured":false,"date":"2026-06-01","created_at":"2026-06-01"}
-]

@@ -1,29 +1,29 @@
 import { mountLayout } from '../layout.js';
 import { createArchive, favBadge, fallbackArt } from '../archive.js';
-import { filmScene, filmAfterScene } from '../scenes.js';
-import { esc, stars, tmdbImg, fmtScore, fmtRuntime, fmtMonth, hueFromString } from '../util.js';
+import { filmScene, filmAfterScene, filmTitle } from '../scenes.js';
+import { esc, stars, tmdbImg, fmtScore, fmtRuntime, hueFromString } from '../util.js';
+import { t, L, locale } from '../i18n.js';
 
 mountLayout('filmler');
 
 const $ = (s) => document.querySelector(s);
-const toolbar = $('#toolbar');
-const norm = (s) => String(s || '').toLocaleLowerCase('tr').normalize('NFD').replace(/[̀-ͯ]/g, '');
+const norm = (s) => String(s || '').toLocaleLowerCase(locale).normalize('NFD').replace(/[̀-ͯ]/g, '');
 
 function card(f, i) {
   const d = f.details || {};
-  const title = f.title_tr;
+  const title = filmTitle(f);
   return `
   <article class="card" data-id="${f.id}" style="--i:${i}">
-    <button class="card__hit" data-open="${f.id}" aria-label="${esc(title)} — ayrıntılar">
+    <button class="card__hit" data-open="${f.id}" aria-label="${esc(t('card.details', { title }))}">
       <div class="card__media">
-        ${fallbackArt(title, f.year, hueFromString(title))}
+        ${fallbackArt(title, f.year, hueFromString(f.title_tr))}
         ${f.poster_path ? `<img data-fallback loading="lazy" src="${tmdbImg(f.poster_path, 'w342')}" alt="">` : ''}
         <span class="card__glare"></span>
         ${favBadge(f)}
         <div class="card__stub" aria-hidden="true">
-          <div class="stub__top"><span>Giriş bileti</span><span>№ ${String(f.id).padStart(4, '0')}</span></div>
+          <div class="stub__top"><span>${t('stub.ticket')}</span><span>№ ${String(f.id).padStart(4, '0')}</span></div>
           <p class="stub__title">${esc(title)}</p>
-          <p class="stub__meta">${[f.year, fmtRuntime(d.runtime), (f.genres || [])[0]].filter(Boolean).map(esc).join(' · ')}${d.directors?.[0] ? `<br>${esc(d.directors[0])}` : ''}${f.watched_at ? `<br>İzledim: ${esc(fmtMonth(f.watched_at))}` : ''}</p>
+          <p class="stub__meta">${[f.year, fmtRuntime(d.runtime), L(f, 'genres')[0]].filter(Boolean).map(esc).join(' · ')}${d.directors?.[0] ? `<br>${esc(d.directors[0])}` : ''}</p>
           <div class="stub__foot">${stars(f.rating)}<span class="stub__score">${fmtScore(f.rating)}/10</span></div>
         </div>
       </div>
@@ -40,47 +40,47 @@ function statsHtml(all) {
   const avg = rated.length ? rated.reduce((s, f) => s + f.rating, 0) / rated.length : null;
   const minutes = all.reduce((s, f) => s + (f.details?.runtime || 0), 0);
   return [
-    [all.length, 'Film'],
-    [all.filter((f) => f.favorite).length, 'Favori'],
-    [avg == null ? '—' : avg.toFixed(1), 'Ortalama puanım'],
-    [Math.round(minutes / 60), 'Saat perde başında'],
+    [all.length, t('stat.films')],
+    [all.filter((f) => f.favorite).length, t('stat.liked')],
+    [avg == null ? '—' : avg.toFixed(1), t('stat.avg')],
+    [minutes ? Math.round(minutes / 60) : '—', t('stat.hours')],
   ].map(([v, l]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
 }
 
-function fillGenres(all) {
+function fillFilters(all) {
   const sel = $('#genre');
   const current = sel.value;
   const counts = new Map();
-  all.forEach((f) => (f.genres || []).forEach((g) => counts.set(g, (counts.get(g) || 0) + 1)));
+  all.forEach((f) => L(f, 'genres').forEach((g) => counts.set(g, (counts.get(g) || 0) + 1)));
   const sorted = [...counts].sort((a, b) => b[1] - a[1]);
-  sel.innerHTML = `<option value="">Tüm türler</option>${sorted.map(([g, n]) => `<option value="${esc(g)}">${esc(g)} (${n})</option>`).join('')}`;
+  sel.innerHTML = `<option value="">${t('films.allGenres')}</option>${sorted.map(([g, n]) => `<option value="${esc(g)}">${esc(g)} (${n})</option>`).join('')}`;
   sel.value = current;
 
   const decades = [...new Set(all.map((f) => f.year && Math.floor(f.year / 10) * 10).filter(Boolean))].sort((a, b) => b - a);
   const dsel = $('#decade');
   const dcur = dsel.value;
-  dsel.innerHTML = `<option value="">Tüm yıllar</option>${decades.map((d) => `<option value="${d}">${d}'ler</option>`).join('')}`;
+  dsel.innerHTML = `<option value="">${t('films.allYears')}</option>${decades.map((d) => `<option value="${d}">${t('films.decade', { d })}</option>`).join('')}`;
   dsel.value = dcur;
 }
 
 const SORTS = {
-  recent: (a, b) => String(b.watched_at || b.created_at).localeCompare(String(a.watched_at || a.created_at)),
-  rating: (a, b) => (b.rating ?? -1) - (a.rating ?? -1),
+  recent: (a, b) => a.order - b.order,
+  rating: (a, b) => (b.rating ?? -1) - (a.rating ?? -1) || a.order - b.order,
   year: (a, b) => (b.year ?? 0) - (a.year ?? 0),
   oldest: (a, b) => (a.year ?? 9999) - (b.year ?? 9999),
-  title: (a, b) => a.title_tr.localeCompare(b.title_tr, 'tr'),
+  title: (a, b) => filmTitle(a).localeCompare(filmTitle(b), locale),
 };
 
 createArchive({
   type: 'films',
   param: 'film',
   els: {
-    grid: $('#grid'), toolbar, stats: $('#stats'), result: $('#result'),
+    grid: $('#grid'), toolbar: $('#toolbar'), stats: $('#stats'), result: $('#result'),
     ambient: $('#ambient'), sceneRoot: $('#scene-root'),
   },
   card,
   stats: statsHtml,
-  onData: fillGenres,
+  onData: fillFilters,
   filters: {
     read: () => ({
       q: norm($('#q').value.trim()),
@@ -90,8 +90,8 @@ createArchive({
       sort: $('#sort').value,
     }),
     match: (f, s) =>
-      (!s.q || norm(`${f.title_tr} ${f.title_original} ${(f.details?.directors || []).join(' ')} ${(f.details?.cast || []).map((c) => c.name).join(' ')}`).includes(s.q)) &&
-      (!s.genre || (f.genres || []).includes(s.genre)) &&
+      (!s.q || norm(`${f.title_tr} ${f.title_en} ${f.title_original} ${(f.details?.directors || []).join(' ')} ${(f.details?.cast || []).map((c) => c.name).join(' ')}`).includes(s.q)) &&
+      (!s.genre || L(f, 'genres').includes(s.genre)) &&
       (!s.decade || (f.year >= s.decade && f.year < s.decade + 10)) &&
       (!s.fav || f.favorite),
   },

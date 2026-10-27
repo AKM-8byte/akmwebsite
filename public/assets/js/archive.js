@@ -1,6 +1,7 @@
 // Film ve oyun sayfalarının ortak motoru: liste, filtre, kart etkileşimi ve detay sahnesi.
 import { getList } from './api.js';
 import { esc, icons, imgFallbacks, extractTone, prefersReducedMotion } from './util.js';
+import { t } from './i18n.js';
 
 const supportsVT = () => typeof document.startViewTransition === 'function' && !prefersReducedMotion();
 
@@ -32,14 +33,14 @@ export function createArchive(cfg) {
     const state = cfg.filters.read();
     visible = cfg.sort(all.filter((it) => cfg.filters.match(it, state)), state);
     if (extra && cfg.beforeGrid) extra.innerHTML = cfg.beforeGrid(visible, all, state);
-    if (result) result.textContent = `${visible.length} / ${all.length} kayıt`;
+    if (result) result.textContent = t('list.count', { n: visible.length, total: all.length });
 
     if (!all.length) {
-      grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><b>Arşiv henüz boş</b>Yönetim panelinden ilk kaydı ekleyince burada görünecek.</div>`;
+      grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><b>${t('list.emptyTitle')}</b>${t('list.empty')}</div>`;
       return;
     }
     if (!visible.length) {
-      grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><b>Eşleşen yok</b>Filtreleri gevşetmeyi dene.</div>`;
+      grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><b>${t('list.noMatchTitle')}</b>${t('list.noMatch')}</div>`;
       return;
     }
     grid.innerHTML = visible.map((it, i) => cfg.card(it, i)).join('');
@@ -289,7 +290,7 @@ export function createArchive(cfg) {
     .then(setData)
     .catch((err) => {
       console.error(err);
-      grid.innerHTML = `<div class="error-box" style="grid-column:1/-1"><b>Arşive ulaşılamadı</b>Bağlantını kontrol edip sayfayı yenile.</div>`;
+      grid.innerHTML = `<div class="error-box" style="grid-column:1/-1"><b>${t('list.errorTitle')}</b>${t('list.error')}</div>`;
     });
 
   return { refresh: apply, open, close };

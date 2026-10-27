@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Filmler · AKM</title>
+  <meta name="i18n-title" content="films.title">
   <meta name="description" content="İzlediğim ve sevdiğim filmler — kendi puanlarım ve notlarımla.">
   <meta name="theme-color" content="#0b0a09">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -21,10 +22,10 @@
 
   <main>
     <section class="archive-hero wrap">
-      <span class="eyebrow">Arşiv 01 — Filmler</span>
+      <span class="eyebrow" data-i18n="films.eyebrow">Arşiv 01 — Filmler</span>
       <div class="archive-hero__row">
-        <h1 class="display">Bazı filmler insanda <em>kalır.</em></h1>
-        <p class="lead">Üzerine gel, biletini gör. Tıkla, perdeyi aç. Her birinin yanında kendi notum ve puanım var.</p>
+        <h1 class="display" data-i18n-html="films.h1">Bazı filmler insanda <em>kalır.</em></h1>
+        <p class="lead" data-i18n="films.lead"></p>
       </div>
       <div class="stats" id="stats"></div>
     </section>
@@ -33,26 +34,26 @@
       <div class="toolbar" id="toolbar">
         <label class="search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
-          <span class="visually-hidden">Film, yönetmen ya da oyuncu ara</span>
-          <input id="q" type="search" placeholder="Film, yönetmen, oyuncu…" autocomplete="off">
+          <span class="visually-hidden" data-i18n="films.searchLabel"></span>
+          <input id="q" type="search" data-i18n-placeholder="films.search" autocomplete="off">
           <kbd>/</kbd>
         </label>
-        <select class="select" id="genre" aria-label="Tür"><option value="">Tüm türler</option></select>
-        <select class="select" id="decade" aria-label="Yıllar"><option value="">Tüm yıllar</option></select>
-        <select class="select" id="sort" aria-label="Sıralama">
-          <option value="recent">Son izlenen</option>
-          <option value="rating">En yüksek puan</option>
-          <option value="year">En yeni film</option>
-          <option value="oldest">En eski film</option>
-          <option value="title">A → Z</option>
+        <select class="select" id="genre" data-i18n-label="filter.genre"><option value="" data-i18n="films.allGenres"></option></select>
+        <select class="select" id="decade" data-i18n-label="filter.years"><option value="" data-i18n="films.allYears"></option></select>
+        <select class="select" id="sort" data-i18n-label="filter.sort">
+          <option value="recent" data-i18n="sort.recent"></option>
+          <option value="rating" data-i18n="sort.rating"></option>
+          <option value="year" data-i18n="sort.year"></option>
+          <option value="oldest" data-i18n="sort.oldest"></option>
+          <option value="title" data-i18n="sort.title"></option>
         </select>
         <button class="toggle" id="fav" type="button" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.2 3 4.5 6.6 4.5c2 0 3.5 1.1 4.4 2.6.9-1.5 2.4-2.6 4.4-2.6 3.6 0 5.7 3.7 4.2 7.2C19.5 16.4 12 21 12 21z"/></svg>
-          Favoriler
+          <span data-i18n="filter.liked">Beğendiklerim</span>
         </button>
       </div>
       <p class="result-line" id="result" aria-live="polite"></p>
-      <section class="grid" id="grid" aria-label="Filmler"></section>
+      <section class="grid" id="grid" aria-label="Films"></section>
     </div>
   </main>
 

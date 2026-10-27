@@ -2,14 +2,16 @@ import { mountLayout } from '../layout.js';
 import { getList } from '../api.js';
 import { SITE } from '../site.js';
 import { fallbackArt } from '../archive.js';
+import { filmTitle } from '../scenes.js';
 import { esc, icons, tmdbImg, igdbImg, hueFromString, imgFallbacks, revealOnScroll } from '../util.js';
+import { t, L } from '../i18n.js';
 
 mountLayout('');
 
 const $ = (s) => document.querySelector(s);
 
-$('#intro').innerHTML = `${esc(SITE.name)}'in kişisel arşivi: <em>izlediklerim</em>, oynadıklarım ve yaptıklarım.`;
-$('#about').textContent = SITE.about;
+$('#intro').innerHTML = t('home.intro', { name: esc(SITE.name) + (document.documentElement.lang === 'tr' ? "'in" : '') });
+$('#about').textContent = L(SITE, 'about');
 $('#links').innerHTML = SITE.links
   .map((l) => `<a class="btn" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ${icons.arrowUpRight}</a>`)
   .join('');
@@ -30,11 +32,12 @@ function render(films, games, projects) {
   ];
   if (pool.length) {
     $('#wall').innerHTML = Array.from({ length: 48 }, (_, i) =>
-      `<div style="--i:${i % 24};position:relative"><img loading="lazy" src="${esc(pool[(i + Math.floor(i / 8) * 3) % pool.length])}" alt=""></div>`,
+      `<div style="--i:${i % 24};position:relative"><img loading="lazy" src="${esc(pool[(i * 5 + Math.floor(i / 8) * 3) % pool.length])}" alt=""></div>`,
     ).join('');
   }
 
-  $('#fan-films').innerHTML = films.slice(0, 3).map((f) => tile(tmdbImg(f.poster_path, 'w185'), f.title_tr, f.year)).join('');
+  const loved = films.filter((f) => f.favorite && f.rating >= 9);
+  $('#fan-films').innerHTML = (loved.length >= 3 ? loved : films).slice(0, 3).map((f) => tile(tmdbImg(f.poster_path, 'w185'), filmTitle(f), f.year)).join('');
   $('#fan-games').innerHTML = games.slice(0, 3).map((g) => tile(igdbImg(g.cover_url, 'cover_big'), g.title, g.year)).join('');
   $('#fan-projects').innerHTML = projects.slice(0, 3).map((p) => tile(p.image_url, p.title, (p.date || '').slice(0, 4))).join('');
 
@@ -43,20 +46,20 @@ function render(films, games, projects) {
   const lastFilm = films[0];
   const lastProject = projects[0];
   const rows = [
-    lastFilm && ['Son izlediğim', lastFilm.title_tr, `/filmler/?film=${lastFilm.id}`],
-    playing && ['Şu an oynuyorum', playing.title, `/oyunlar/?oyun=${playing.id}`],
-    lastProject && ['Son proje', lastProject.title, `/projeler/?p=${encodeURIComponent(lastProject.slug)}`],
+    lastFilm && [t('now.film'), filmTitle(lastFilm), `/filmler/?film=${lastFilm.id}`],
+    playing && [t('now.game'), playing.title, `/oyunlar/?oyun=${playing.id}`],
+    lastProject && [t('now.project'), lastProject.title, `/projeler/?p=${encodeURIComponent(lastProject.slug)}`],
   ].filter(Boolean);
   $('#now').innerHTML = rows
     .map(([k, v, href]) => `<a class="now__row" href="${href}"><small>${k}</small><b>${esc(v)}</b>${icons.arrow}</a>`)
     .join('');
 
-  // Kayan şerit: favori filmler ve oyunlar
+  // Kayan şerit: en yüksek puanlı, beğendiğim filmler ve oyunlar
   const words = [
-    ...films.filter((f) => f.favorite).map((f) => f.title_tr),
+    ...films.filter((f) => f.favorite && f.rating === 10).map(filmTitle),
     ...games.filter((g) => g.favorite).map((g) => g.title),
-  ].slice(0, 14);
-  const list = words.length ? words : ['Filmler', 'Oyunlar', 'Projeler', 'Notlar', 'Puanlar'];
+  ].slice(0, 16);
+  const list = words.length ? words : [t('nav.films'), t('nav.games'), t('nav.projects')];
   const half = list.map((w) => `<span>${esc(w)}</span>`).join('');
   $('#ticker').innerHTML = half + half;
 

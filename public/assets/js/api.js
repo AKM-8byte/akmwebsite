@@ -1,5 +1,5 @@
 // Okuma katmanı: önce tarayıcıdaki kopyayı anında göster, arkadan tazesini çek.
-const PREFIX = 'akm:v1:';
+const PREFIX = 'akm:v2:';
 const FRESH_MS = 60 * 1000;
 
 function readCache(type) {
@@ -20,8 +20,8 @@ function writeCache(type, data) {
 }
 
 async function fetchList(type) {
-  const res = await fetch(`/api/${type}`, { headers: { accept: 'application/json' } });
-  if (!res.ok) throw new Error(`/api/${type} → ${res.status}`);
+  const res = await fetch(`/data/${type}.json`, { headers: { accept: 'application/json' } });
+  if (!res.ok) throw new Error(`/data/${type}.json → ${res.status}`);
   const data = await res.json();
   writeCache(type, data);
   return data;
@@ -44,22 +44,4 @@ export async function getList(type, { onUpdate } = {}) {
     return cached.data;
   }
   return fetchList(type);
-}
-
-export async function adminFetch(path, { method = 'GET', body } = {}) {
-  const res = await fetch(`/api/admin/${path}`, {
-    method,
-    headers: body ? { 'content-type': 'application/json' } : {},
-    body: body ? JSON.stringify(body) : undefined,
-    credentials: 'same-origin',
-  });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    const err = new Error(data.error || `İstek başarısız (${res.status})`);
-    err.status = res.status;
-    throw err;
-  }
-  // Yazma sonrası tarayıcı önbelleğini temizle ki site hemen güncel görünsün.
-  if (method !== 'GET') ['films', 'games', 'projects'].forEach((t) => localStorage.removeItem(PREFIX + t));
-  return data;
 }

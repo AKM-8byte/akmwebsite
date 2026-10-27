@@ -159,6 +159,15 @@ body::after {
 }
 .nav__num { font-family: var(--font-mono); font-size: 10px; color: var(--faint); margin-right: 6px; }
 
+.header-right { display: flex; align-items: center; gap: 10px; }
+.lang-toggle { display: inline-flex; padding: 3px; border-radius: 999px; border: 1px solid var(--line-strong); }
+.lang-toggle button {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+  padding: 5px 10px; border-radius: 999px; color: var(--muted); transition: background 0.2s, color 0.2s;
+}
+.lang-toggle button:hover { color: var(--text); }
+.lang-toggle button[aria-pressed='true'] { background: var(--text); color: var(--bg); }
+
 .menu-btn { display: none; width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line-strong); position: relative; }
 .menu-btn span, .menu-btn span::before {
   position: absolute; left: 50%; top: 50%; width: 16px; height: 1.5px; background: var(--text);

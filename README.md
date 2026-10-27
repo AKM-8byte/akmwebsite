@@ -1,69 +1,54 @@
 # AKM — Kişisel Arşiv
 
-Filmlerim, oyunlarım ve projelerim tek bir sitede. Cloudflare Pages + D1 üzerinde çalışır; film bilgileri **TMDB**'den (Türkçe ad, afiş, oyuncular, fragman), oyun bilgileri **IGDB**'den (kutu kapağı, ekran görüntüleri, fragman) otomatik gelir. Her `git push` siteyi otomatik yayınlar.
+Filmlerim, oyunlarım ve projelerim tek bir sitede: **https://akmwebsite.pages.dev**
+Site tamamen statik (Cloudflare Pages). Türkçe ve İngilizce dil seçeneği var.
 
-```
-public/            Statik site (derleme yok)
-  index.html       Ana sayfa
-  filmler/         Film arşivi
-  oyunlar/         Oyun arşivi
-  projeler/        Projeler
-  admin/           Yönetim paneli (Cloudflare Access ile korunur)
-  assets/css, js   Ortak tasarım ve kod
-functions/api/     API (Pages Functions): okuma + admin yazma uçları
-schema.sql         D1 veritabanı şeması
-scripts/           Yerel önizleme sunucusu ve örnek veri
-```
+## Veriler nereden geliyor?
 
-## İlk kurulum (bir kez)
+| Bölüm | Kaynak | Otomatik eklenen |
+|---|---|---|
+| Filmler | Google Drive → *AKM Movies - Film Veritabanı* tablosu | TMDB: TR/EN özet, türler, oyuncular, yönetmen, süre, fragman, arka plan |
+| Oyunlar | `data/oyunlar.csv` | IGDB: kapak, ekran görüntüleri, eleştirmen puanı, fragman |
+| Projeler | `data/projeler.json` | — |
 
-1. **Node.js LTS** kur (nodejs.org) — sadece `wrangler` komutu için.
-2. **API anahtarları**
-   - TMDB: themoviedb.org → hesap → Ayarlar → API → *API Read Access Token*
-   - IGDB: dev.twitch.tv/console → Twitch hesabıyla gir (iki adımlı doğrulama açık olmalı) → *Register Your Application* → OAuth Redirect URL: `http://localhost`, Category: *Website Integration*, Client Type: *Confidential* → **Client ID** ve **New Secret** ile Client Secret'ı al
-3. **GitHub**: `akmwebsite` adında boş repo aç, bu klasörü push'la.
-4. **D1 veritabanı**
+`npm run sync` tabloyu indirir, TMDB/IGDB'den detayları çeker ve `public/data/*.json` dosyalarını yazar.
+Çekilen detaylar `data/cache.json`'da saklanır; sonraki senkronlarda sadece yeni filmler için TMDB'ye gidilir.
+
+## Yeni film / oyun ekleme
+
+1. Filmi Drive'daki tabloya ekle (ya da oyunu `data/oyunlar.csv`'ye).
+2. Yayınla:
    ```bash
-   npx wrangler login
-   npx wrangler d1 create akm-db
+   npm run yayinla
    ```
-   Çıkan `database_id`'yi `wrangler.toml` içine yaz, sonra:
-   ```bash
-   npx wrangler d1 execute akm-db --remote --file=schema.sql
-   ```
-5. **Cloudflare Pages**: Workers & Pages → Create → Pages → *Connect to Git* → `akmwebsite`
-   - Framework: None · Build command: boş · Output: `public`
-   - Settings → Bindings: D1 → `DB` = `akm-db` (wrangler.toml'dan da okunur)
-   - Settings → Variables and Secrets: `TMDB_TOKEN`, `IGDB_CLIENT_ID`, `IGDB_CLIENT_SECRET` (Secret olarak)
-6. **Admin koruması (Cloudflare Access)**: Zero Trust → Access → Applications → Self-hosted
-   - Domain: `akmwebsite.pages.dev`, path `admin` ve ikinci kural olarak `api/admin`
-   - Policy: Allow → sadece kendi e-postan
-   - Uygulamanın *AUD tag* değerini `ACCESS_AUD`, takım alan adını (ör. `akm.cloudflareaccess.com`) `ACCESS_TEAM_DOMAIN` olarak Pages'e ekle.
-7. Eski filmler: Google Sheets tablosunu kopyala → `/admin` → **Toplu içe aktar** sekmesine yapıştır.
+   (= `npm run sync` + Cloudflare'a yükleme)
 
-## Günlük kullanım
+### oyunlar.csv sütunları
+`ad, durum, puan, platform, başladım, bitirdim, favori, not`
+- durum: `bitirdim` · `oynuyorum` · `bıraktım` · `sırada`
+- puan: 5 üzerinden (4.5 gibi)
+- tarihler: `2026-10-27` biçiminde
+- birden fazla platform: `PC; PlayStation 5`
 
-- `/admin` → film/oyun adını ara → seç → puan + not → **Arşive ekle**. Gerisini site halleder.
-- Kod değişikliği: düzenle → `git push` (yedek) → yayınla:
-  ```bash
-  npx wrangler pages deploy --branch main
+## Kurulum (bir kez)
+
+- **Node.js LTS** kurulu olmalı.
+- Drive tablosu **"Bağlantıya sahip herkes → Görüntüleyen"** olarak paylaşılmalı (sync tabloyu böyle indirir).
+- `.dev.vars` dosyasına (repoya girmez) anahtarları yaz:
   ```
-  Pages projesi wrangler ile (Direct Upload) oluşturuldu; GitHub'a bağlı değil, yayın bu komutla yapılır.
-- Kişisel bilgiler (isim, hakkımda, linkler): `public/assets/js/site.js`
+  TMDB_TOKEN=...            themoviedb.org → Ayarlar → API → API Read Access Token
+  IGDB_CLIENT_ID=...        dev.twitch.tv/console → uygulama → Client ID
+  IGDB_CLIENT_SECRET=...    aynı uygulama → New Secret
+  ```
+- Cloudflare girişi: `npx wrangler login`
 
-## Yerelde çalıştırma
+## Yerelde bakmak
 
-Gerçek API ile (önerilen):
 ```bash
-cp .dev.vars.example .dev.vars   # anahtarlarını yaz
-npx wrangler d1 execute akm-db --local --file=schema.sql
-npx wrangler pages dev
-```
-Sadece tasarıma bakmak için (Node gerekmez, örnek veriyle):
-```bash
+npm run sync
 python scripts/dev_preview.py
 ```
+→ http://localhost:8788
 
-## Domain
-
-Alan adı alınca: Pages projesi → Custom domains → ekle. Access uygulamasına da yeni alan adını ekle.
+Kişisel bilgiler (isim, hakkımda, linkler): `public/assets/js/site.js`
+Arayüz metinleri (TR/EN): `public/assets/js/i18n.js`

@@ -2,6 +2,7 @@ import { mountLayout } from '../layout.js';
 import { getList } from '../api.js';
 import { fallbackArt } from '../archive.js';
 import { esc, icons, fmtMonth, hueFromString, imgFallbacks } from '../util.js';
+import { t, L } from '../i18n.js';
 
 mountLayout('projeler');
 
@@ -17,11 +18,11 @@ function card(p, i) {
       ${p.image_url ? `<img data-fallback loading="lazy" src="${esc(p.image_url)}" alt="">` : ''}
     </div>
     <div class="project__body">
-      <span class="project__num">№ ${String(i + 1).padStart(2, '0')}${p.date ? ` · ${esc(fmtMonth(p.date))}` : ''}${p.featured ? '<span class="chip">Öne çıkan</span>' : ''}</span>
+      <span class="project__num">№ ${String(i + 1).padStart(2, '0')}${p.date ? ` · ${esc(fmtMonth(p.date))}` : ''}${p.featured ? `<span class="chip">${t('projects.featured')}</span>` : ''}</span>
       <h2 class="project__title">${esc(p.title)}</h2>
-      ${p.summary ? `<p class="project__summary">${esc(p.summary)}</p>` : ''}
-      ${p.tech.length ? `<div class="project__tech">${p.tech.map((t) => `<span class="chip">${esc(t)}</span>`).join('')}</div>` : ''}
-      <span class="project__more">Hikâyesini oku ${icons.arrow}</span>
+      ${L(p, 'summary') ? `<p class="project__summary">${esc(L(p, 'summary'))}</p>` : ''}
+      ${(p.tech || []).length ? `<div class="project__tech">${(p.tech || []).map((t) => `<span class="chip">${esc(t)}</span>`).join('')}</div>` : ''}
+      <span class="project__more">${t('projects.read')} ${icons.arrow}</span>
     </div>
   </button>`;
 }
@@ -33,15 +34,15 @@ function openReader(slug, push = true) {
   root.innerHTML = `
   <div class="reader" role="dialog" aria-modal="true" aria-labelledby="rd-title">
     <article class="reader__panel">
-      <div class="reader__bar"><span class="eyebrow">Proje</span><button class="icon-btn" data-close aria-label="Kapat">${icons.close}</button></div>
+      <div class="reader__bar"><span class="eyebrow">${t('projects.kicker')}</span><button class="icon-btn" data-close aria-label="${t('scene.close')}">${icons.close}</button></div>
       <div class="reader__img">${fallbackArt(p.title, (p.date || '').slice(0, 4), hueFromString(p.title))}${p.image_url ? `<img data-fallback src="${esc(p.image_url)}" alt="">` : ''}</div>
       <div class="reader__body">
         <span class="project__num">${p.date ? esc(fmtMonth(p.date)) : ''}</span>
         <h2 class="display" id="rd-title">${esc(p.title)}</h2>
-        ${p.tech.length ? `<div class="project__tech">${p.tech.map((t) => `<span class="chip">${esc(t)}</span>`).join('')}</div>` : ''}
-        <p class="reader__text">${esc(p.description || p.summary || '')}</p>
+        ${(p.tech || []).length ? `<div class="project__tech">${(p.tech || []).map((t) => `<span class="chip">${esc(t)}</span>`).join('')}</div>` : ''}
+        <p class="reader__text">${esc(L(p, 'description') || L(p, 'summary') || '')}</p>
         <div class="reader__links">
-          ${p.live_url ? `<a class="btn btn--accent" href="${esc(p.live_url)}" target="_blank" rel="noopener">Canlı gör ${icons.arrowUpRight}</a>` : ''}
+          ${p.live_url ? `<a class="btn btn--accent" href="${esc(p.live_url)}" target="_blank" rel="noopener">${t('projects.live')} ${icons.arrowUpRight}</a>` : ''}
           ${p.github_url ? `<a class="btn" href="${esc(p.github_url)}" target="_blank" rel="noopener">${icons.github} GitHub</a>` : ''}
         </div>
       </div>
@@ -76,7 +77,7 @@ function render(items) {
   all = items;
   list.innerHTML = items.length
     ? items.map(card).join('')
-    : `<div class="empty"><b>Henüz proje yok</b>Yönetim panelinden ilk projeni ekleyebilirsin.</div>`;
+    : `<div class="empty"><b>${t('projects.emptyTitle')}</b>${t('projects.empty')}</div>`;
   imgFallbacks(list);
   const slug = new URLSearchParams(location.search).get('p');
   if (slug) openReader(slug, false);
@@ -85,4 +86,4 @@ function render(items) {
 list.innerHTML = Array.from({ length: 2 }, () => '<div class="skeleton" style="height:320px"></div>').join('');
 getList('projects', { onUpdate: render })
   .then(render)
-  .catch(() => { list.innerHTML = `<div class="error-box"><b>Projelere ulaşılamadı</b>Sayfayı yenilemeyi dene.</div>`; });
+  .catch(() => { list.innerHTML = `<div class="error-box"><b>${t('projects.error')}</b>${t('retry')}</div>`; });

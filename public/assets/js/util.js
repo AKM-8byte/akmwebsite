@@ -1,3 +1,5 @@
+import { t, locale } from './i18n.js';
+
 export const esc = (value) =>
   String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
@@ -27,13 +29,13 @@ export function stars(rating10) {
   const r = Math.round(rating10) / 2;
   let out = '';
   for (let i = 1; i <= 5; i++) out += r >= i ? icons.star : r >= i - 0.5 ? icons.starHalf : icons.starEmpty;
-  return `<span class="stars" aria-label="5 üzerinden ${r}">${out}</span>`;
+  return `<span class="stars" aria-label="${t('stars', { n: r })}">${out}</span>`;
 }
 
 export const fmtScore = (rating10) => (rating10 == null ? '—' : Number.isInteger(rating10) ? `${rating10}` : rating10.toFixed(1));
 
-const dateFmt = new Intl.DateTimeFormat('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
-const monthFmt = new Intl.DateTimeFormat('tr-TR', { month: 'short', year: 'numeric' });
+const dateFmt = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' });
+const monthFmt = new Intl.DateTimeFormat(locale, { month: 'short', year: 'numeric' });
 export const fmtDate = (iso) => (iso ? dateFmt.format(new Date(`${iso.slice(0, 10)}T12:00:00`)) : '');
 export const fmtMonth = (iso) => (iso ? monthFmt.format(new Date(`${iso.slice(0, 10)}T12:00:00`)) : '');
 
@@ -41,7 +43,7 @@ export function fmtRuntime(min) {
   if (!min) return '';
   const h = Math.floor(min / 60);
   const m = min % 60;
-  return h ? `${h} sa ${m ? `${m} dk` : ''}`.trim() : `${m} dk`;
+  return h ? `${h} ${t('time.h')} ${m ? `${m} ${t('time.m')}` : ''}`.trim() : `${m} ${t('time.m')}`;
 }
 
 export const daysBetween = (a, b) =>

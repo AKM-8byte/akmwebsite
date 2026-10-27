@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Oyunlar · AKM</title>
+  <meta name="i18n-title" content="games.title">
   <meta name="description" content="Oynadığım, bitirdiğim ve sırada bekleyen oyunlar — puanlarım ve yorumlarımla.">
   <meta name="theme-color" content="#0b0a09">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -21,38 +22,38 @@
 
   <main>
     <section class="archive-hero wrap">
-      <span class="eyebrow">Arşiv 02 — Oyunlar</span>
+      <span class="eyebrow" data-i18n="games.eyebrow">Arşiv 02 — Oyunlar</span>
       <div class="archive-hero__row">
-        <h1 class="display">Kaydet, devam et, <em>bir daha.</em></h1>
-        <p class="lead">Bitirdiklerim, yarıda bıraktıklarım ve sırada bekleyenler. Bir kartuşu seç; puanım, yorumum ve o oyunla geçen günlerim seni bekliyor.</p>
+        <h1 class="display" data-i18n-html="games.h1">Kaydet, devam et, <em>bir daha.</em></h1>
+        <p class="lead" data-i18n="games.lead"></p>
       </div>
       <div class="stats" id="stats"></div>
     </section>
 
     <div class="wrap">
       <div class="toolbar" id="toolbar">
-        <div class="tabs" id="tabs" role="tablist" aria-label="Duruma göre"></div>
+        <div class="tabs" id="tabs" role="tablist" data-i18n-label="games.byStatus"></div>
         <label class="search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
-          <span class="visually-hidden">Oyun ara</span>
-          <input id="q" type="search" placeholder="Oyun ya da stüdyo ara…" autocomplete="off">
+          <span class="visually-hidden" data-i18n="games.searchLabel"></span>
+          <input id="q" type="search" data-i18n-placeholder="games.search" autocomplete="off">
           <kbd>/</kbd>
         </label>
-        <select class="select" id="genre" aria-label="Tür"><option value="">Tüm türler</option></select>
-        <select class="select" id="sort" aria-label="Sıralama">
-          <option value="recent">En son</option>
-          <option value="rating">En yüksek puan</option>
-          <option value="status">Duruma göre</option>
-          <option value="title">A → Z</option>
+        <select class="select" id="genre" data-i18n-label="filter.genre"><option value="" data-i18n="films.allGenres"></option></select>
+        <select class="select" id="sort" data-i18n-label="filter.sort">
+          <option value="recent" data-i18n="sort.latest"></option>
+          <option value="rating" data-i18n="sort.rating"></option>
+          <option value="status" data-i18n="sort.status"></option>
+          <option value="title" data-i18n="sort.title"></option>
         </select>
         <button class="toggle" id="fav" type="button" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.2 3 4.5 6.6 4.5c2 0 3.5 1.1 4.4 2.6.9-1.5 2.4-2.6 4.4-2.6 3.6 0 5.7 3.7 4.2 7.2C19.5 16.4 12 21 12 21z"/></svg>
-          Favoriler
+          <span data-i18n="filter.liked">Beğendiklerim</span>
         </button>
       </div>
       <p class="result-line" id="result" aria-live="polite"></p>
       <div id="extra"></div>
-      <section class="grid" id="grid" aria-label="Oyunlar"></section>
+      <section class="grid" id="grid" aria-label="Games"></section>
     </div>
   </main>
 

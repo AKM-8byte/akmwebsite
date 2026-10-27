@@ -2,17 +2,5 @@ name = "akmwebsite"
 pages_build_output_dir = "./public"
 compatibility_date = "2025-09-01"
 
-# Cloudflare D1: akm-db
-[[d1_databases]]
-binding = "DB"
-database_name = "akm-db"
-database_id = "9c73408f-1fb1-491c-8c76-cb581f65f422"
-
-# Gizli anahtarlar repoda DEĞİL, Cloudflare panelinde (Settings → Variables and Secrets)
-# veya yerelde .dev.vars dosyasında tutulur:
-#   TMDB_TOKEN          TMDB "API Read Access Token" (v4) ya da v3 API anahtarı
-#   IGDB_CLIENT_ID      Twitch geliştirici uygulamasının Client ID'si (IGDB için)
-#   IGDB_CLIENT_SECRET  aynı uygulamanın Client Secret'ı
-#   ACCESS_TEAM_DOMAIN  ör. akm.cloudflareaccess.com
-#   ACCESS_AUD          Cloudflare Access uygulamasının "Application Audience (AUD) Tag" değeri
-#   DEV_ADMIN           sadece yerelde "1" — admin kontrolünü atlar. Production'da ASLA ekleme.
+# Site tamamen statik: veriler `npm run sync` ile public/data/*.json olarak üretilir.
+# Yerel anahtarlar (.dev.vars, repoya girmez): TMDB_TOKEN, IGDB_CLIENT_ID, IGDB_CLIENT_SECRET
