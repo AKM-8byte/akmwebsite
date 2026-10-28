@@ -63,13 +63,26 @@ export function igdbSearchName(title) {
   return t;
 }
 
+// Aynı adlı birden fazla oyun olduğunda doğru yılı seçmek için hazır eşleştirmeler.
+// Tabloda "IGDB Adı" sütununa "Ad (yıl)" yazarak (örn. "Mafia (2002)") yenisini kendin de ekleyebilirsin.
+const ALIASES = {
+  mafiathecityoflostheaven: 'Mafia (2002)',
+  maxpayne: 'Max Payne (2001)',
+};
+
 export async function gameDetails(igdb, rawTitle) {
-  const title = igdbSearchName(rawTitle);
+  const hinted = ALIASES[norm(rawTitle)] || rawTitle;
+  const yearHint = Number((String(hinted).match(/\((\d{4})\)\s*$/) || [])[1]) || null;
+  const title = igdbSearchName(String(hinted).replace(/\s*\(\d{4}\)\s*$/, ''));
   const q = title.replace(/["\\]/g, ' ');
   const fields = `fields name, url, summary, first_release_date, aggregated_rating, total_rating,
     cover.image_id, artworks.image_id, screenshots.image_id, videos.video_id, genres.name, platforms.name,
     websites.url, websites.category, involved_companies.developer, involved_companies.company.name;`;
-  const search = (text) => igdb('games', `search "${text}"; ${fields} where version_parent = null; limit 10;`);
+  // Yıl verildiyse sadece o yıl çıkan oyunlar aranır (unix saniye cinsinden aralık).
+  const range = yearHint
+    ? ` & first_release_date >= ${Date.UTC(yearHint, 0, 1) / 1000} & first_release_date < ${Date.UTC(yearHint + 1, 0, 1) / 1000}`
+    : '';
+  const search = (text) => igdb('games', `search "${text}"; ${fields} where version_parent = null${range}; limit 10;`);
   let hits = await search(q);
   // "Mafia: The City of Lost Heaven" IGDB'de sadece "Mafia" — alt başlıksız da dene.
   if (!hits.length && q.includes(':')) hits = await search(q.split(':')[0].trim());

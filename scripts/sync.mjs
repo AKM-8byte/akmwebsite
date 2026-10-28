@@ -124,7 +124,8 @@ async function syncGames(igdb, cache) {
   const games = await pool(rows, 3, async (r, i) => {
     const key = gameKey(r);
     // Önbellekte yoksa ya da önceki denemede IGDB'de bulunamadıysa tekrar dene.
-    if ((!cache.games[key] || !cache.games[key].igdb_id) && igdb && !OFFLINE) {
+    // (yıl'ı olmayan kayıt çıkış tarihsiz, yani büyük ihtimalle yanlış eşleşmedir; o da yenilenir)
+    if ((!cache.games[key] || !cache.games[key].igdb_id || !cache.games[key].year) && igdb && !OFFLINE) {
       try {
         cache.games[key] = await gameDetails(igdb, r.igdb_name || r.title);
       } catch (err) {
