@@ -31,12 +31,8 @@ jobs:
         with:
           node-version: 22
 
-      # TMDB/IGDB detay önbelleği çalıştırmalar arasında saklanır: sadece yeni film/oyunlar için API'ye gidilir.
-      - uses: actions/cache@v4
-        with:
-          path: data/cache.json
-          key: akm-cache-${{ github.run_id }}
-          restore-keys: akm-cache-
+      # TMDB/IGDB detay önbelleği repodaki data/cache.json'dır (checkout ile gelir). Eskiden actions/cache
+      # bunun üstüne eski bir kopya yazıp yeni filmlerin detaylarını siliyordu; bu yüzden kaldırıldı.
 
       - name: Filmleri, Drive tablolarını ve detayları hazırla
         run: node scripts/sync.mjs
