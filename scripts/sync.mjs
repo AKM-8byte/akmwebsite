@@ -1,6 +1,6 @@
 // AKM veri senkronizasyonu
 //   GitHub Actions bunu çalıştırır (siteyi yayınlamadan önce). Bu betik:
-//   - filmleri Letterboxd dışa aktarımından, oyun ve projeleri Drive tablolarından okuyup public/data/*.json üretir,
+//   - filmleri, oyunları ve projeleri Drive tablolarından okuyup public/data/*.json üretir,
 //   - yeni film/oyun detaylarını TMDB/IGDB'den çekip yerel önbelleğe yazar,
 //
 //   Kullanım:  node scripts/sync.mjs            (tablo + TMDB/IGDB)
@@ -17,7 +17,6 @@ import { fileURLToPath } from 'node:url';
 import {
   SHEET_CSV, sheetRows, filmKey, tmdbClient, fetchMovie, buildFilm,
 } from './lib/films.js';
-import { letterboxdRows } from './lib/letterboxd.js';
 import { GAMES_CSV, gameSheetRows, gameKey, igdbClient, gameDetails, buildGame } from './lib/games.js';
 import { PROJECTS_CSV, projectSheetRows, buildProject } from './lib/projects.js';
 
@@ -77,17 +76,9 @@ async function readSheet(url, localName) {
   return readFile(local, 'utf8');
 }
 
-// data/letterboxd/ doluysa filmlerin kaynağı Letterboxd dışa aktarımıdır; data/filmler.csv sadece
-// eski Türkçe ad/afiş/yorum kaynağı olarak okunur (Drive'dan tekrar indirilmez).
+// Filmlerin kaynağı Drive film tablosudur (Letterboxd zip'i artık kullanılmıyor).
 async function filmRows() {
-  const dir = path.join(DATA, 'letterboxd');
-  const read = (f) => (existsSync(path.join(dir, f)) ? readFile(path.join(dir, f), 'utf8') : '');
-  if (!existsSync(path.join(dir, 'watched.csv'))) return sheetRows(await readSheet(SHEET_CSV, 'filmler.csv'));
-  const local = path.join(DATA, 'filmler.csv');
-  const old = existsSync(local) ? sheetRows(await readFile(local, 'utf8')) : [];
-  const [ratings, watched, reviews, likes] = await Promise.all(['ratings.csv', 'watched.csv', 'reviews.csv', 'likes/films.csv'].map(read));
-  console.log('✓ Letterboxd dışa aktarımı okundu (data/letterboxd)');
-  return letterboxdRows({ ratings, watched, reviews, likes }, old);
+  return sheetRows(await readSheet(SHEET_CSV, 'filmler.csv'));
 }
 
 async function syncFilms(tmdb, cache) {

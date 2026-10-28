@@ -6,28 +6,22 @@ Türkçe ve İngilizce dil seçeneği var. Cloudflare kullanılmıyor.
 ## Nasıl çalışıyor?
 
 GitHub Actions ([.github/workflows/pages.yml](.github/workflows/pages.yml)) her `push`'ta, **15 dakikada bir** ve elle çalıştırıldığında:
-1. Filmleri Letterboxd verisinden, oyun ve projeleri Drive tablolarından okur,
+1. Filmleri, oyunları ve projeleri Drive tablolarından okur,
 2. Yeni film/oyunların detaylarını TMDB / IGDB'den çeker (afiş, Türkçe ad, özet, oyuncular, fragman),
 3. `public/` klasörünü yayınlar.
 
 Elle bir şey yayınlamana gerek yok; veriyi güncellemen yeter.
 
-## Filmler (Letterboxd)
+## Filmler (Google Drive tablosu)
 
-Letterboxd resmi API vermediği için veri, Letterboxd'den indirilen zip ile güncellenir.
+Tabloya satır ekle → en geç ~15 dakikada sitede. Tablo **"Bağlantıya sahip herkes → Görüntüleyen"** olarak paylaşılmış kalmalı.
+Tablo kimliği: `scripts/lib/films.js`.
 
-1. Letterboxd → **Settings → Import & Export → Export Your Data** ile zip'i indir.
-2. GitHub'da repoyu aç → `data/letterboxd` klasörü → **Add file → Upload files** → zip'i sürükle → **Commit changes**.
-3. Actions kendiliğinden zip'i açar, filmleri ekler; birkaç dakikada sitede görünür.
-
-Zip'in adı tarih içerir (`letterboxd-ahmetkyr-2026-10-28-...zip`). Birden fazla zip varsa **en yenisi** kullanılır; eskileri silebilirsin.
-Bilgisayardan yapmak istersen: `npm run letterboxd -- "<zip yolu>" --push`
-
-Yeni film için Türkçe ad, afiş vb. TMDB'den otomatik gelir. Düzeltmek istersen `data/filmler.csv`'ye (GitHub'da düzenleyebilirsin) o filmin satırını yaz:
+Sütunlar:
 ```
 türkçe ad,orijinal ad,yıl,puan,afiş url,yorum,beğenildi,letterboxd url
 ```
-Satır, orijinal ad + yıl (ya da letterboxd url) ile filme eşlenir. Türkçe ad ve afiş url doluysa TMDB'ninkinin önüne geçer; puan, yorum ve beğeni Letterboxd'den gelir.
+Yeni film için sadece orijinal ad + yıl yazman yeter; Türkçe ad, afiş, özet, oyuncular, fragman TMDB'den otomatik gelir. Türkçe ad ve afiş url doluysa TMDB'ninkinin önüne geçer. Puan 5 üzerinden (4.5 gibi), beğenildi: `EVET` / `HAYIR`.
 
 ## Oyunlar ve projeler (Google Drive tabloları)
 

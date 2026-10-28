@@ -1,4 +1,4 @@
-# GitHub Pages yayını: Letterboxd verisini ve Drive tablolarını okur, TMDB/IGDB detaylarını ekler, siteyi yayınlar.
+# GitHub Pages yayını: Drive tablolarını (filmler, oyunlar, projeler) okur, TMDB/IGDB detaylarını ekler, siteyi yayınlar.
 # Her push'ta, 15 dakikada bir ve elle (Actions → "Siteyi yayınla" → Run workflow) çalışır.
 name: Siteyi yayınla
 
@@ -37,12 +37,6 @@ jobs:
           path: data/cache.json
           key: akm-cache-${{ github.run_id }}
           restore-keys: akm-cache-
-
-      # data/letterboxd/ klasörüne yüklenen en yeni Letterboxd zip'i (adındaki tarihe göre) açılır.
-      - name: Letterboxd zip'ini aç
-        run: |
-          zip=$(ls data/letterboxd/*.zip 2>/dev/null | sort | tail -1)
-          if [ -n "$zip" ]; then node scripts/letterboxd.mjs "$zip"; else echo "zip yok, data/letterboxd içindeki CSV'ler kullanılacak"; fi
 
       - name: Filmleri, Drive tablolarını ve detayları hazırla
         run: node scripts/sync.mjs
