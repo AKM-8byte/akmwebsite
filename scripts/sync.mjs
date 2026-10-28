@@ -54,6 +54,9 @@ async function pool(items, size, fn) {
 
 // ---------------- akış ----------------
 
+// GitHub Actions'ta çalışma sayfasında görünen not/uyarı satırı (yerelde düz yazı olarak görünür).
+const report = (level, msg) => console.log(process.env.GITHUB_ACTIONS ? `::${level} title=AKM sync::${msg}` : `[${level}] ${msg}`);
+
 // Tabloyu Drive'dan indirir ve yerel yedeğe yazar; indirilemezse yerel yedeği kullanır.
 async function readSheet(url, localName) {
   const local = path.join(DATA, localName);
@@ -65,11 +68,14 @@ async function readSheet(url, localName) {
         const text = await res.text();
         await writeFile(local, text);
         console.log(`✓ Drive tablosu indirildi (${localName})`);
+        report('notice', `${localName}: Drive'dan indirildi (${text.split(/\r?\n/).length - 1} satır)`);
         return text;
       }
       console.warn(`! ${localName}: tablo indirilemedi ("bağlantıya sahip herkes görüntüleyebilir" olmalı). Yerel kopya kullanılıyor.`);
+      report('warning', `${localName}: Drive tablosu indirilemedi (HTTP ${res.status}, ${type || 'içerik türü yok'}); repodaki eski kopya kullanıldı`);
     } catch (err) {
       console.warn(`! ${localName}: tablo indirilemedi: ${err.message}. Yerel kopya kullanılıyor.`);
+      report('warning', `${localName}: Drive tablosu indirilemedi (${err.message}); repodaki eski kopya kullanıldı`);
     }
   }
   if (!existsSync(local)) throw new Error(`${localName} yok: Drive paylaşımını aç ya da dosyayı ekle.`);
@@ -84,20 +90,31 @@ async function filmRows() {
 async function syncFilms(tmdb, cache) {
   const rows = await filmRows();
   let fetched = 0;
+  let cacheHits = 0;
+  const errors = [];
   const films = await pool(rows, 6, async (r, i) => {
     const key = filmKey(r);
-    if (!cache.films[key] && tmdb && !OFFLINE) {
+    if (cache.films[key]) cacheHits++;
+    // Önbellekte olmayan ya da önceki denemede detayı bulunamayan filmler için TMDB'ye tekrar gidilir.
+    if ((!cache.films[key] || !cache.films[key].tmdb_id) && tmdb && !OFFLINE) {
       try {
         cache.films[key] = await fetchMovie(tmdb, r);
         fetched++;
       } catch (err) {
+        errors.push(`${r.title_original || r.title_tr}: ${err.message}`);
         console.warn(`  ! ${r.title_tr}: ${err.message}`);
       }
     }
     return buildFilm(r, cache.films[key], i);
   });
-  const missing = films.filter((f) => !f.tmdb_id).length;
-  console.log(`✓ ${films.length} film (TMDB'den yeni çekilen: ${fetched}, detayı olmayan: ${missing})`);
+  const missingFilms = films.filter((f) => !f.tmdb_id);
+  console.log(`✓ ${films.length} film (TMDB'den yeni çekilen: ${fetched}, detayı olmayan: ${missingFilms.length})`);
+  report(
+    missingFilms.length || errors.length ? 'warning' : 'notice',
+    `Filmler: ${films.length} satır, önbellekte bulunan ${cacheHits}, TMDB anahtarı ${tmdb ? 'VAR' : 'YOK'}, TMDB'den çekilen ${fetched}, detayı olmayan ${missingFilms.length}` +
+      (missingFilms.length ? ` [${missingFilms.slice(0, 8).map((f) => `${f.title_original || f.title_tr}|${f.year}`).join('; ')}]` : '') +
+      (errors.length ? ` | TMDB hataları: ${errors.slice(0, 3).join('; ')}` : ''),
+  );
   return films;
 }
 
