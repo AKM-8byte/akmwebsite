@@ -120,18 +120,28 @@ async function syncFilms(tmdb, cache) {
 
 async function syncGames(igdb, cache) {
   const rows = gameSheetRows(await readSheet(GAMES_CSV, 'oyunlar.csv'));
+  const errors = [];
   const games = await pool(rows, 3, async (r, i) => {
     const key = gameKey(r);
-    if (!cache.games[key] && igdb && !OFFLINE) {
+    // Önbellekte yoksa ya da önceki denemede IGDB'de bulunamadıysa tekrar dene.
+    if ((!cache.games[key] || !cache.games[key].igdb_id) && igdb && !OFFLINE) {
       try {
-        cache.games[key] = await gameDetails(igdb, r.title);
+        cache.games[key] = await gameDetails(igdb, r.igdb_name || r.title);
       } catch (err) {
+        errors.push(`${r.title}: ${err.message}`);
         console.warn(`  ! ${r.title}: ${err.message}`);
       }
     }
     return buildGame(r, cache.games[key], i);
   });
   console.log(`✓ ${games.length} oyun`);
+  const unmatched = games.filter((g) => !g.igdb_id);
+  report(
+    unmatched.length || errors.length || !igdb ? 'warning' : 'notice',
+    `Oyunlar: IGDB anahtarı ${igdb ? 'VAR' : 'YOK'}; eşleşme (tablo adı → IGDB adı): ` +
+      rows.map((r, i) => `${r.title} → ${games[i].igdb_id ? `${games[i].title} (${games[i].year})` : 'BULUNAMADI'}`).join(' | ') +
+      (errors.length ? ` | Hatalar: ${errors.slice(0, 3).join('; ')}` : ''),
+  );
   return games;
 }
 

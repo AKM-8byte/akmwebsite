@@ -12,6 +12,7 @@ const STATUS = {
 export function gameSheetRows(csvText) {
   return rowsToObjects(parseCsv(csvText), {
     title: ['ad', 'oyun', 'title'],
+    igdb_name: ['igdb adı', 'igdb adi', 'igdb'],
     status: ['durum', 'status'],
     rating: ['puan', 'rating'],
     platforms: ['platform', 'platformlar'],
@@ -50,7 +51,20 @@ export function igdbClient(id, secret) {
 const igdbImg = (imageId, size) => (imageId ? `https://images.igdb.com/igdb/image/upload/t_${size}/${imageId}.jpg` : null);
 const platformName = (p) => (p.name.startsWith('PC (') ? 'PC' : p.name);
 
-export async function gameDetails(igdb, title) {
+// Tabloya kısa yazılan adları (GTA 5, Gta San Andreas...) IGDB'deki resmi ada çevirir.
+// Başka bir oyun için eşleşme tutmazsa tabloya "IGDB Adı" sütunu ekleyip resmi adı oraya yazabilirsin.
+const ROMAN = { 1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V' };
+export function igdbSearchName(title) {
+  let t = String(title).trim().replace(/\s+/g, ' ');
+  if (/^gta\b/i.test(t)) {
+    t = t.replace(/^gta\b/i, 'Grand Theft Auto').replace(/^(Grand Theft Auto) ([1-5])\b/, (_, a, n) => `${a} ${ROMAN[n]}`);
+    t = t.replace(/^(Grand Theft Auto) (San Andreas|Vice City Stories|Vice City|Liberty City Stories|Chinatown Wars)\b/i, '$1: $2');
+  }
+  return t;
+}
+
+export async function gameDetails(igdb, rawTitle) {
+  const title = igdbSearchName(rawTitle);
   const q = title.replace(/["\\]/g, ' ');
   const fields = `fields name, url, summary, first_release_date, aggregated_rating, total_rating,
     cover.image_id, artworks.image_id, screenshots.image_id, videos.video_id, genres.name, platforms.name,
