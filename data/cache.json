@@ -18770,6 +18770,940 @@
     }
    ],
    "trailer": "WjTICfrC25s"
+  },
+  "backtothefuturepartiii|1990": {
+   "tmdb_id": 196,
+   "title_en": "Back to the Future Part III",
+   "title_tr_tmdb": "Geleceğe Dönüş III",
+   "backdrop_path": "/AtF7TESJEMmImBRUj9Z7HmW2ZH0.jpg",
+   "poster_path": "/crzoVQnMzIrRfHtQw0tLBirNfVg.jpg",
+   "overview_en": "The final installment finds Marty digging the trusty DeLorean out of a mineshaft and looking for Doc in the Wild West of 1885. But when their time machine breaks down, the travelers are stranded in a land of spurs. More problems arise when Doc falls for pretty schoolteacher Clara Clayton, and Marty tangles with Buford Tannen.",
+   "overview_tr": "1955 yılında kısılıp kalan Marty'yi kurtarmak için Dr. Brown zamanda seyahat eder. Ancak kendisi 1885'e gelip DeLorean bozulduğu ve o zamanın teknolojisi yetmediği için burada takılan Doktor, Marty'ye bir mektup yazarak arabayı gömdüğü yeri söyler. 1955'teki Marty bu sayede arabayı bulur ve Doktoru kurtarmaya vahşi batıya gelir. Tabii burada işler umduğu gibi olmaz zira Dr. Brown hem iyi bir doktor olmuş hem de çok feci aşık olmuştır bunun dışında peşine de onu öldürmek isteyen bir kanun kaçağı çetesini takmıştır.",
+   "tagline_en": "They've saved the best trip for last... But this time they may have gone too far.",
+   "tagline_tr": "En iyi seyahati en sona sakladılar... Ancak bu sefer de çok uzağa gidecekler.",
+   "genres_en": [
+    "Adventure",
+    "Comedy",
+    "Science Fiction"
+   ],
+   "genres_tr": [
+    "Macera",
+    "Komedi",
+    "Bilim-Kurgu"
+   ],
+   "runtime": 119,
+   "release_date": "1990-05-25",
+   "vote_average": 7.5,
+   "countries": [
+    "US"
+   ],
+   "directors": [
+    "Robert Zemeckis"
+   ],
+   "cast": [
+    {
+     "name": "Michael J. Fox",
+     "character": "Marty McFly / Seamus McFly",
+     "profile_path": "/2JB4FMgQmnhbBlQ4SxWFN9EIVDi.jpg"
+    },
+    {
+     "name": "Christopher Lloyd",
+     "character": "Doctor Emmett Brown",
+     "profile_path": "/nxVjpyb3UrfbPZnEyDNlQVlFAs5.jpg"
+    },
+    {
+     "name": "Mary Steenburgen",
+     "character": "Clara Clayton",
+     "profile_path": "/yJhfuqS3yXW7kLSyvRU6n3b35mq.jpg"
+    },
+    {
+     "name": "Thomas F. Wilson",
+     "character": "Buford 'Mad Dog' Tannen / Biff Tannen",
+     "profile_path": "/mVhm65ZVBIRIptWGiMIvoUy0Khi.jpg"
+    },
+    {
+     "name": "Lea Thompson",
+     "character": "Maggie McFly / Lorraine McFly",
+     "profile_path": "/85E9NTEfkRdUdK4kTrrnk5of25w.jpg"
+    },
+    {
+     "name": "Elisabeth Shue",
+     "character": "Jennifer",
+     "profile_path": "/1pmjDSLvOuqKW1P2KRPlpFMeUFe.jpg"
+    },
+    {
+     "name": "Matt Clark",
+     "character": "Bartender",
+     "profile_path": "/n5TJz5CaTqRXLpAOl0wHJXrPQOk.jpg"
+    },
+    {
+     "name": "Richard Dysart",
+     "character": "Barbwire Salesman",
+     "profile_path": "/yQOaZexN3YbqGWOguu2VrjsvX2G.jpg"
+    },
+    {
+     "name": "Pat Buttram",
+     "character": "Saloon Old Timer",
+     "profile_path": "/jRVB0shCimyljcDYlIUpdcAVe8E.jpg"
+    },
+    {
+     "name": "Harry Carey Jr.",
+     "character": "Saloon Old Timer",
+     "profile_path": "/7O61xbnqAMDOKVCh9ZH8deW6M30.jpg"
+    }
+   ],
+   "trailer": "DTdBq1fQOBU"
+  },
+  "trolls|2016": {
+   "tmdb_id": 136799,
+   "title_en": "Trolls",
+   "title_tr_tmdb": "Troller",
+   "backdrop_path": "/gXyYOWAkk4FdQU3adK8WFj8nN9J.jpg",
+   "poster_path": "/9VlK2j0THZWzhQPq0W3Oc0IIdBB.jpg",
+   "overview_en": "After the monstrous Bergens invade Troll Village, Princess Poppy, the happiest Troll ever born, and overly-cautious, curmudgeonly outcast Branch set off on a journey to rescue her friends. Their mission is full of adventure and mishaps, as this mismatched duo try to tolerate each other long enough to get the job done.",
+   "overview_tr": "Kendilerine ait kasabada mutlu ve dünyadaki diğer tehlikelerden uzak bir hayat süren \\\"Troll\\\" adlı minik yaratıklar, Bergen adlı kocaman ve ancak bir Troll yediğinde kendini iyi hissedebilecek başka yaratıklarla karşılaştıklarında tamamen yok olma tehlikesiyle karşılaşırlar. Kasabanın işgal edilmesinin ardından kendilerini son anda kurtarabilen, bir Troll için bile fazla neşeli ve iyimser Puppy ile son derece titiz ancak karamsar Branch, hiç uyuşamasalar da mecburiyetten maceralı bir yolculuğa birlikte adım atacaktır.",
+   "tagline_en": "Find your happy place.",
+   "tagline_tr": "Mutlu olduğun yeri bul.",
+   "genres_en": [
+    "Adventure",
+    "Animation",
+    "Comedy",
+    "Family",
+    "Fantasy"
+   ],
+   "genres_tr": [
+    "Macera",
+    "Animasyon",
+    "Komedi",
+    "Aile",
+    "Fantastik"
+   ],
+   "runtime": 92,
+   "release_date": "2016-10-13",
+   "vote_average": 6.6,
+   "countries": [
+    "US"
+   ],
+   "directors": [
+    "Mike Mitchell"
+   ],
+   "cast": [
+    {
+     "name": "Anna Kendrick",
+     "character": "Poppy (voice)",
+     "profile_path": "/i2HIJQcBsUQ3o9HwEeDwou45D60.jpg"
+    },
+    {
+     "name": "Justin Timberlake",
+     "character": "Branch (voice)",
+     "profile_path": "/6Yk5t9RwkdkAT8Qv45934Eez2CA.jpg"
+    },
+    {
+     "name": "Zooey Deschanel",
+     "character": "Bridget (voice)",
+     "profile_path": "/30KQyjsXfrdm4Dcori7bDFTg9Le.jpg"
+    },
+    {
+     "name": "Christopher Mintz-Plasse",
+     "character": "King Gristle (voice)",
+     "profile_path": "/dnj2qyxmPt5JF5uurbXQLegppAx.jpg"
+    },
+    {
+     "name": "Christine Baranski",
+     "character": "Chef (voice)",
+     "profile_path": "/q6Zi3BYlmoim1JXXMGgRVS5C87x.jpg"
+    },
+    {
+     "name": "Russell Brand",
+     "character": "Creek (voice)",
+     "profile_path": "/AzRt43rdeK5nH7w6uWyyVwYla0.jpg"
+    },
+    {
+     "name": "James Corden",
+     "character": "Biggie (voice)",
+     "profile_path": "/xGB0gfZ48M27gQjjL7inJIh1Pqj.jpg"
+    },
+    {
+     "name": "Jeffrey Tambor",
+     "character": "King Peppy (voice)",
+     "profile_path": "/e4IkxsEo5O4oUWrIpXlEhWa6lqB.jpg"
+    },
+    {
+     "name": "Ron Funches",
+     "character": "Cooper (voice)",
+     "profile_path": "/DtULMxPvAlOKfrwISxdEffIKlk.jpg"
+    },
+    {
+     "name": "Aino Jawo",
+     "character": "Satin (voice)",
+     "profile_path": "/7GcGCvOEbOc9WkXlRT41Ehqqlv6.jpg"
+    }
+   ],
+   "trailer": "xyjm5VQ11TQ"
+  },
+  "taken|2008": {
+   "tmdb_id": 8681,
+   "title_en": "Taken",
+   "title_tr_tmdb": "96 Saat",
+   "backdrop_path": "/ysCmtf9Y9fLDChZ88PXId5RbLP1.jpg",
+   "poster_path": "/ognkaUSNgJe1a2pjB4UNdzEo5jT.jpg",
+   "overview_en": "Bryan Mills, a former government operative, is trying to reconnect with his teenage daughter Kim. After reluctantly agreeing with his ex-wife to let Kim go to Paris on vacation with a friend, his worst nightmare comes true. While on the phone with his daughter shortly after she arrives in Paris, she and her friend are abducted by a gang of human traffickers. Working against the clock, Bryan relies on his extensive training and skills to track down the ruthless gang that abducted her and launch a one-man war to rescue his daughter.",
+   "overview_tr": "Canından çok sevdiği kızı Kim’in kaçırılışını, cep telefonu bağlantısında çaresiz ve hiçbir şey yapamadan, dinleyen bir babanın durumundan daha kötü ne olabilir? Bu kabus gibi durum, eski bir gizli ajan olan Bryan’ın başına gelir. Genç kadınları satmakta uzmanlaşmış bir çetenin elinden biricik kızını kurtarmak için önünde çok kısa bir zaman dilimi vardır.",
+   "tagline_en": "They took his daughter. He'll take their lives.",
+   "tagline_tr": "Kızını kurtarması için, son 4 gün...",
+   "genres_en": [
+    "Action",
+    "Thriller"
+   ],
+   "genres_tr": [
+    "Aksiyon",
+    "Gerilim"
+   ],
+   "runtime": 94,
+   "release_date": "2008-02-18",
+   "vote_average": 7.4,
+   "countries": [
+    "FR",
+    "US"
+   ],
+   "directors": [
+    "Pierre Morel"
+   ],
+   "cast": [
+    {
+     "name": "Liam Neeson",
+     "character": "Bryan Mills",
+     "profile_path": "/sRLev3wJioBgun3ZoeAUFpkLy0D.jpg"
+    },
+    {
+     "name": "Maggie Grace",
+     "character": "Kim Mills",
+     "profile_path": "/fEZSGno4ooPgFjuGzE7ogsWEHsh.jpg"
+    },
+    {
+     "name": "Famke Janssen",
+     "character": "Lenore St. John",
+     "profile_path": "/uvZGwNsLqe9NyA57Qlt46IkO8Bd.jpg"
+    },
+    {
+     "name": "Olivier Rabourdin",
+     "character": "Jean-Claude Pitrel",
+     "profile_path": "/r15C7VnXnyMJk8JyNQOJGaauiKA.jpg"
+    },
+    {
+     "name": "Katie Cassidy",
+     "character": "Amanda",
+     "profile_path": "/v7cs7RFcfoiL8W1YRkZK5lBc57H.jpg"
+    },
+    {
+     "name": "Nicolas Giraud",
+     "character": "Peter",
+     "profile_path": "/ow7oY9iTl4aJNWO6R72a1xW3IkX.jpg"
+    },
+    {
+     "name": "Leland Orser",
+     "character": "Sam Gilroy",
+     "profile_path": "/vvVcWhActW8k2gQz95UatVP4Duf.jpg"
+    },
+    {
+     "name": "Jon Gries",
+     "character": "Mark Casey",
+     "profile_path": "/nX69eyOvpmJ0YEpm2Qz2ZISngqw.jpg"
+    },
+    {
+     "name": "Holly Valance",
+     "character": "Sheerah",
+     "profile_path": "/ej0B7odLeZ6KPriKfCnlA58cvtW.jpg"
+    },
+    {
+     "name": "David Warshofsky",
+     "character": "Bernie Harris",
+     "profile_path": "/pLABX1wyaVE4CcEZVmoM2Y5XbQU.jpg"
+    }
+   ],
+   "trailer": "ZxKDnpiJaVc"
+  },
+  "theiceroad|2021": {
+   "tmdb_id": 646207,
+   "title_en": "The Ice Road",
+   "title_tr_tmdb": "Buz Yolu",
+   "backdrop_path": "/klQJJGLRxyZUoiWusZ5GA3qAtiq.jpg",
+   "poster_path": "/gl1dlX9sKYpiKujq80Yxve7l4yg.jpg",
+   "overview_en": "After a remote diamond mine collapses in far northern Canada, an ice road driver must lead an impossible rescue mission over a frozen ocean to save the trapped miners.",
+   "overview_tr": "Bir karayolu nakliye şirketinin sahibi olan Goldenrod, tehlikeli bir görevde kendisine etmesi için sürücü Mike ile anlaşır. Kanada’nun kuzey bölgesinde bir elmas madeni çökmüştür ve insanlar büyük bir tehdit altında kendilerine yardım gelmesini bekler. Madencilerin yardımına gitmeye çalışan Mike, kendisini zorlu bir mücadelenin içinde bulur.",
+   "tagline_en": "This mission is on thin ice.",
+   "tagline_tr": "Bu görev ince buz üzerinde.",
+   "genres_en": [
+    "Action",
+    "Thriller"
+   ],
+   "genres_tr": [
+    "Aksiyon",
+    "Gerilim"
+   ],
+   "runtime": 108,
+   "release_date": "2021-06-24",
+   "vote_average": 6.7,
+   "countries": [
+    "CA",
+    "US"
+   ],
+   "directors": [
+    "Jonathan Hensleigh"
+   ],
+   "cast": [
+    {
+     "name": "Liam Neeson",
+     "character": "Mike McCann",
+     "profile_path": "/sRLev3wJioBgun3ZoeAUFpkLy0D.jpg"
+    },
+    {
+     "name": "Amber Midthunder",
+     "character": "Tantoo",
+     "profile_path": "/f8VWGyaIS38NkDIzQ2hapXKt0N5.jpg"
+    },
+    {
+     "name": "Marcus Thomas",
+     "character": "John 'Gurty' McCann",
+     "profile_path": "/wpsm5roIsSqaOX9ApIJqCxDAqgD.jpg"
+    },
+    {
+     "name": "Holt McCallany",
+     "character": "Lampard",
+     "profile_path": "/b1FEXFQ8ZnvXhVrMqCv5mTJ8aW3.jpg"
+    },
+    {
+     "name": "Laurence Fishburne",
+     "character": "Goldenrod",
+     "profile_path": "/2GbXERENPpl5MmlqOLlPVaVtifD.jpg"
+    },
+    {
+     "name": "Matt McCoy",
+     "character": "General Manager Sickle",
+     "profile_path": "/4VkRnRc7h4JatbBKZMEQV7n4w0R.jpg"
+    },
+    {
+     "name": "Martin Sensmeier",
+     "character": "Miner Cody",
+     "profile_path": "/d25Mx8thmbgQWHR35S5s6MxjsCc.jpg"
+    },
+    {
+     "name": "Matt Salinger",
+     "character": "CEO Thomason",
+     "profile_path": "/6XekW5u9FAKKkEMiWmsyxCNcoXm.jpg"
+    },
+    {
+     "name": "BJ Verot",
+     "character": "Washington",
+     "profile_path": "/z7w65HwJSR5AIosjJQiNqohyNt7.jpg"
+    },
+    {
+     "name": "Bradley Sawatzky",
+     "character": "VP Operations Tager",
+     "profile_path": "/vXgqU1DWOLteOXhAwZW8TJglEeG.jpg"
+    }
+   ],
+   "trailer": "_XfS6kjoM24"
+  },
+  "kingdomofheaven|2005": {
+   "tmdb_id": 1495,
+   "title_en": "Kingdom of Heaven",
+   "title_tr_tmdb": "Cennet'in Krallığı",
+   "backdrop_path": "/kP8rK9dGS1pr0HrnmXfIi2heWjo.jpg",
+   "poster_path": "/2NaFdWy9hkM35vZB1hkqsnTcms8.jpg",
+   "overview_en": "After his wife dies, a blacksmith named Balian is thrust into royalty, political intrigue and bloody holy wars during the Crusades.",
+   "overview_tr": "Gladyatör'ün yönetmeni Ridley Scott'tan cesaret, tutku ve macera dolu, destansı bir yolculuğa hazır olun. Ortaçağ Kudüs'ünün entrika ve şaşaasının ortasında Orlando Bloom her şeyini kaybetmiş biriyken, şeref ve cesareti kendisini ziyarete gelen yürekli bir misafirde bulan genç Fransız Balian rolüyle göz dolduruyor. Yaşanan yenilgilere rağmen Balian, halkını kurtarmak ve gerçek bir şövalye olmak için ezici kuvvetlerle savaşır.",
+   "tagline_en": "Be without fear in the face of your enemies. Safeguard the helpless, and do no wrong",
+   "tagline_tr": null,
+   "genres_en": [
+    "Drama",
+    "Action",
+    "Adventure",
+    "History",
+    "War"
+   ],
+   "genres_tr": [
+    "Dram",
+    "Aksiyon",
+    "Macera",
+    "Tarih",
+    "Savaş"
+   ],
+   "runtime": 144,
+   "release_date": "2005-05-03",
+   "vote_average": 7.1,
+   "countries": [
+    "US",
+    "GB",
+    "DE",
+    "ES"
+   ],
+   "directors": [
+    "Ridley Scott"
+   ],
+   "cast": [
+    {
+     "name": "Orlando Bloom",
+     "character": "Balian de Ibelin",
+     "profile_path": "/lwQoA0qJTCZ6l2FH6PjmhRQjiaB.jpg"
+    },
+    {
+     "name": "Eva Green",
+     "character": "Sibylla",
+     "profile_path": "/vwjOWfUeDk5fQr8jraKlR1Yfxxq.jpg"
+    },
+    {
+     "name": "Jeremy Irons",
+     "character": "Tiberias",
+     "profile_path": "/w8Ct1q02Ht3sWdOSqfp3B85TzT.jpg"
+    },
+    {
+     "name": "David Thewlis",
+     "character": "Hospitaler",
+     "profile_path": "/gJqz8h5AKaVvOLS0hm5Vdvel6JB.jpg"
+    },
+    {
+     "name": "Ghassan Massoud",
+     "character": "Saladin",
+     "profile_path": "/cJuAOuB6M8XortdpdZbz64VIImB.jpg"
+    },
+    {
+     "name": "Liam Neeson",
+     "character": "Godfrey de Ibelin",
+     "profile_path": "/sRLev3wJioBgun3ZoeAUFpkLy0D.jpg"
+    },
+    {
+     "name": "Brendan Gleeson",
+     "character": "Reynald de Chatillon",
+     "profile_path": "/ctPPJu5ZYDZr1IPmzoNpezczrm0.jpg"
+    },
+    {
+     "name": "Marton Csokas",
+     "character": "Guy de Lusignan",
+     "profile_path": "/gmeUY7FR0bFLdu7Ma5kvpH3Gt6B.jpg"
+    },
+    {
+     "name": "Alexander Siddig",
+     "character": "Nasir",
+     "profile_path": "/oETjmdGRXgahgwGue7k52ZwMs5x.jpg"
+    },
+    {
+     "name": "Michael Sheen",
+     "character": "Priest",
+     "profile_path": "/nGxIcIcfJjdPN3k8zFabtA1gRqL.jpg"
+    }
+   ],
+   "trailer": "6Z2wGCZ2fSM"
+  },
+  "taken2|2012": {
+   "tmdb_id": 82675,
+   "title_en": "Taken 2",
+   "title_tr_tmdb": "Takip: İstanbul",
+   "backdrop_path": "/5M92Rtz6r01HLrN0TMrU8jCbyVm.jpg",
+   "poster_path": "/yzAlcuJhpnxRPjaj7AHBRbNPQCJ.jpg",
+   "overview_en": "In Istanbul, retired CIA operative Bryan Mills and his wife are taken hostage by the father of a kidnapper Mills killed while rescuing his daughter.",
+   "overview_tr": "İlk filmde Bryan Mills'ın kızını kaçıran ve yine Mills tarafından öldürülen çetenin baş elemanının babası, bu sefer intikam için emekli CIA ajanının İstanbul'da tatil yapan karısını kaçırır. Kızının peşinde olduklarını anlayan Bryan Mills, bu sefer kızının yardımıyla ailesine zarar vermek isteyenleri birer birer avlama yoluna gider.",
+   "tagline_en": "First they took his daughter. Now they're coming for him.",
+   "tagline_tr": "Bu defa intikam için geldiler.",
+   "genres_en": [
+    "Action",
+    "Crime",
+    "Thriller"
+   ],
+   "genres_tr": [
+    "Aksiyon",
+    "Suç",
+    "Gerilim"
+   ],
+   "runtime": 91,
+   "release_date": "2012-09-27",
+   "vote_average": 6.4,
+   "countries": [
+    "FR",
+    "TR",
+    "US"
+   ],
+   "directors": [
+    "Olivier Megaton"
+   ],
+   "cast": [
+    {
+     "name": "Liam Neeson",
+     "character": "Bryan Mills",
+     "profile_path": "/sRLev3wJioBgun3ZoeAUFpkLy0D.jpg"
+    },
+    {
+     "name": "Maggie Grace",
+     "character": "Kim Mills",
+     "profile_path": "/fEZSGno4ooPgFjuGzE7ogsWEHsh.jpg"
+    },
+    {
+     "name": "Famke Janssen",
+     "character": "Lenore St. John",
+     "profile_path": "/uvZGwNsLqe9NyA57Qlt46IkO8Bd.jpg"
+    },
+    {
+     "name": "Leland Orser",
+     "character": "Sam Gilroy",
+     "profile_path": "/vvVcWhActW8k2gQz95UatVP4Duf.jpg"
+    },
+    {
+     "name": "D. B. Sweeney",
+     "character": "Bernie Harris",
+     "profile_path": "/enY28APVRWfyHjGAkh6VCkYCWOA.jpg"
+    },
+    {
+     "name": "Jon Gries",
+     "character": "Mark Casey",
+     "profile_path": "/nX69eyOvpmJ0YEpm2Qz2ZISngqw.jpg"
+    },
+    {
+     "name": "Rade Šerbedžija",
+     "character": "Murad Krasniqi",
+     "profile_path": "/1mJC5oD3pLH1vAS3wJ4sGNxYeqJ.jpg"
+    },
+    {
+     "name": "Luke Grimes",
+     "character": "Jamie",
+     "profile_path": "/c547Xiwf9feeDbGfQchfJCkC111.jpg"
+    },
+    {
+     "name": "Kevork Malikyan",
+     "character": "Inspector Durmaz",
+     "profile_path": "/6rIgKwXjAFo2x4fEBuqOYC9oFq6.jpg"
+    },
+    {
+     "name": "Alain Figlarz",
+     "character": "Suko",
+     "profile_path": "/wqag3Ab0zVl5Gkeet0NPJodpsiG.jpg"
+    }
+   ],
+   "trailer": "otHUjWVgIig"
+  },
+  "iamlegend|2007": {
+   "tmdb_id": 6479,
+   "title_en": "I Am Legend",
+   "title_tr_tmdb": "Ben Efsaneyim",
+   "backdrop_path": "/ePgD1cwmklyrFBjl6z96IuixuSY.jpg",
+   "poster_path": "/fhbiz5BsGUVEZmzPP72SoPlbMz0.jpg",
+   "overview_en": "Robert Neville is a scientist who was unable to stop the spread of the terrible virus that was incurable and man-made. Immune, Neville is now the last human survivor in what is left of New York City and perhaps the world. For three years, Neville has faithfully sent out daily radio messages, desperate to find any other survivors who might be out there. But he is not alone.",
+   "overview_tr": "Bir virüs, insan ırkını kana susamış mutantlara çevirir. Uygarlığın son umudu, virüsten etkilenmeyen tek kişi olan bilim adamı Robert Neville'dir.",
+   "tagline_en": "The last man on Earth is not alone.",
+   "tagline_tr": null,
+   "genres_en": [
+    "Drama",
+    "Science Fiction",
+    "Thriller"
+   ],
+   "genres_tr": [
+    "Dram",
+    "Bilim-Kurgu",
+    "Gerilim"
+   ],
+   "runtime": 101,
+   "release_date": "2007-12-12",
+   "vote_average": 7.2,
+   "countries": [
+    "US",
+    "GB"
+   ],
+   "directors": [
+    "Francis Lawrence"
+   ],
+   "cast": [
+    {
+     "name": "Will Smith",
+     "character": "Robert Neville",
+     "profile_path": "/8TlKqbXYgHmmaEoPBJ7djJ8Rxxa.jpg"
+    },
+    {
+     "name": "Alice Braga",
+     "character": "Anna Montez",
+     "profile_path": "/d9JdgvUiqyWuGQLmozNfGZOpIBz.jpg"
+    },
+    {
+     "name": "Charlie Tahan",
+     "character": "Ethan",
+     "profile_path": "/isCdDBAxrSOjugK3HjgESi6rXcn.jpg"
+    },
+    {
+     "name": "Dash Mihok",
+     "character": "Alpha Male",
+     "profile_path": "/jnruNUJv57nNtO66SR3oJ5tQuM5.jpg"
+    },
+    {
+     "name": "Salli Richardson-Whitfield",
+     "character": "Zoe Neville",
+     "profile_path": "/wMQaIzY5kyRQd8UwF1lphKK6oQm.jpg"
+    },
+    {
+     "name": "Willow Smith",
+     "character": "Marley Neville",
+     "profile_path": "/gXZnwJlPJet90CtW9BbI3JkXpRn.jpg"
+    },
+    {
+     "name": "Emma Thompson",
+     "character": "Dr. Alice Krippin",
+     "profile_path": "/zQ0hWHh3tzaOOziPbABQI8s9WCu.jpg"
+    },
+    {
+     "name": "Darrell Foster",
+     "character": "Mike - Military Escort",
+     "profile_path": "/qtpqMXlRwZirZvP1wDvDfh4xqpe.jpg"
+    },
+    {
+     "name": "Joanna Numata",
+     "character": "Alpha Female",
+     "profile_path": "/pFpVqxMlQpsjTbthnzgqBLfHKMp.jpg"
+    },
+    {
+     "name": "Samuel Glen",
+     "character": "Military Driver - Jay",
+     "profile_path": "/noRKTbgAXBp2hM9rHS1n10IhaF7.jpg"
+    }
+   ],
+   "trailer": "4uDU6SUpr8k"
+  },
+  "minionstheriseofgru|2022": {
+   "tmdb_id": 438148,
+   "title_en": "Minions: The Rise of Gru",
+   "title_tr_tmdb": "Minyonlar 2: Gru'nun Yükselişi",
+   "backdrop_path": "/wZS4xSfPtk1NPQnx9zsT5R2WhCu.jpg",
+   "poster_path": "/4dBDk1LPdvdhcZdjQBmdXwiVKUA.jpg",
+   "overview_en": "A fanboy of a supervillain supergroup known as the Vicious 6, Gru hatches a plan to become evil enough to join them, with the backup of his followers, the Minions.",
+   "overview_tr": "Gru, henüz daha 12 yaşında bir çocukken, yani kötülüklerin ustası olmamışken, yaşadığı bodrumdan bütün dünyaya hakim olma hayallerini kurar. Yüreklere korku salan haydutların oluşturduğu Hırçın Altılılar çetesi lidelerini ekipten atınca, Gru onlara katılmaya çalışır. Ancak kısa sürede kötülüklerin can düşmanı haline gelir. Gru kaçış yolunda başının çaresine bakmak için uğraşırken, Minyonlar da onu kurtarmak için bir yeni kavga sporu öğrenmek için kolları sıvar. Ve Gru da en kötülerin bile dostlarının yardımına muhtaç olduklarını görür.",
+   "tagline_en": "A villain will rise.",
+   "tagline_tr": "Bir Kötü Doğuyor!",
+   "genres_en": [
+    "Animation",
+    "Comedy",
+    "Crime",
+    "Science Fiction",
+    "Family"
+   ],
+   "genres_tr": [
+    "Animasyon",
+    "Komedi",
+    "Suç",
+    "Bilim-Kurgu",
+    "Aile"
+   ],
+   "runtime": 87,
+   "release_date": "2022-06-29",
+   "vote_average": 7.3,
+   "countries": [
+    "US"
+   ],
+   "directors": [
+    "Kyle Balda"
+   ],
+   "cast": [
+    {
+     "name": "Steve Carell",
+     "character": "Gru (voice)",
+     "profile_path": "/sSxw69G0znJuettMYGDCAXfSwSY.jpg"
+    },
+    {
+     "name": "Pierre Coffin",
+     "character": "The Minions (voice)",
+     "profile_path": "/eAA9uWRqHlm1LT3nZfXb7UuPfVb.jpg"
+    },
+    {
+     "name": "Alan Arkin",
+     "character": "Wild Knuckles (voice)",
+     "profile_path": "/AoMhBzvWMy8bAz14KdbQ30SF0RZ.jpg"
+    },
+    {
+     "name": "Taraji P. Henson",
+     "character": "Belle Bottom (voice)",
+     "profile_path": "/jUU2X9mDwJaAniEmJOfvImBS9qb.jpg"
+    },
+    {
+     "name": "Michelle Yeoh",
+     "character": "Master Chow (voice)",
+     "profile_path": "/i6fHvGt7Rb8oVyjjdQVV6vEHB94.jpg"
+    },
+    {
+     "name": "Julie Andrews",
+     "character": "Gru's Mom (voice)",
+     "profile_path": "/rUn5jeKOoSJjTMshJepQxebfT7b.jpg"
+    },
+    {
+     "name": "Russell Brand",
+     "character": "Dr. Nefario (voice)",
+     "profile_path": "/AzRt43rdeK5nH7w6uWyyVwYla0.jpg"
+    },
+    {
+     "name": "Jean-Claude Van Damme",
+     "character": "Jean Clawed (voice)",
+     "profile_path": "/7DP3bm3MS0qa0L8tBLHGebbCu6H.jpg"
+    },
+    {
+     "name": "Dolph Lundgren",
+     "character": "Svengeance (voice)",
+     "profile_path": "/fB1tOws6Gav0xE8LYlELEb82hJt.jpg"
+    },
+    {
+     "name": "Danny Trejo",
+     "character": "Stronghold (voice)",
+     "profile_path": "/7JrUkRGBscZ1Hy5JinaaXjjzSCF.jpg"
+    }
+   ],
+   "trailer": "HhIl_XJ-OGA"
+  },
+  "alvinandthechipmunkschipwrecked|2011": {
+   "tmdb_id": 55301,
+   "title_en": "Alvin and the Chipmunks: Chipwrecked",
+   "title_tr_tmdb": "Alvin ve Sincaplar: Eğlence Adası",
+   "backdrop_path": "/j8M9FjI1seC6OmUluDGkOZIwZt.jpg",
+   "poster_path": "/npOXWVoZyl8UrF2wtByHtfmsWSX.jpg",
+   "overview_en": "Playing around while aboard a cruise ship, the Chipmunks and Chipettes accidentally go overboard and end up marooned in a tropical paradise. They discover their new turf is not as deserted as it seems.",
+   "overview_tr": "Alvin ve sevimli sincap arkadaşları geri dönüyor! Lüks bir Mavi Yolculuk gemisinde, ortalığı birbirine katarak seyahat ederken başlarını gene belaya sokan sincaplar kendilerini bu kez ıssız, tropik bir adada buluyorlar. Adanın dört bir yanında dişlerine göre yemek arayan sevimli yaratıklar, bir yandan eve gitmenin yolunu bulmaya çalışırken diğer yandan cennet gibi görünen bu adanın o kadar da arkadaş canlısı olmadığını fark ederler.",
+   "tagline_en": "Sun, sea and squeaks.",
+   "tagline_tr": "Bu kez ıssız bir adaya düşecekler!",
+   "genres_en": [
+    "Comedy",
+    "Fantasy",
+    "Family",
+    "Music",
+    "Animation"
+   ],
+   "genres_tr": [
+    "Komedi",
+    "Fantastik",
+    "Aile",
+    "Müzik",
+    "Animasyon"
+   ],
+   "runtime": 87,
+   "release_date": "2011-12-14",
+   "vote_average": 5.7,
+   "countries": [
+    "US"
+   ],
+   "directors": [
+    "Mike Mitchell"
+   ],
+   "cast": [
+    {
+     "name": "Jason Lee",
+     "character": "Dave",
+     "profile_path": "/64tEXo3xR9IFXsIJKSlJ2LUrrEA.jpg"
+    },
+    {
+     "name": "David Cross",
+     "character": "Ian",
+     "profile_path": "/aYsbAtUu5oWk1p8RY31k3w5Emul.jpg"
+    },
+    {
+     "name": "Jenny Slate",
+     "character": "Zoe",
+     "profile_path": "/mMxsNO6r966ut0sordYzj2iDOb6.jpg"
+    },
+    {
+     "name": "Justin Long",
+     "character": "Alvin (voice)",
+     "profile_path": "/7TGXeHw4o86IBm6xknQotpludXK.jpg"
+    },
+    {
+     "name": "Matthew Gray Gubler",
+     "character": "Simon (voice)",
+     "profile_path": "/tHjIUjHFjl4Kzc4XQ7JSd1EHYSU.jpg"
+    },
+    {
+     "name": "Jesse McCartney",
+     "character": "Theodore (voice)",
+     "profile_path": "/4Amtwnuh5eaGOMcl3NMHJXyRbrg.jpg"
+    },
+    {
+     "name": "Amy Poehler",
+     "character": "Eleanor (voice)",
+     "profile_path": "/rwmvRonpluV6dCPiQissYrchvSD.jpg"
+    },
+    {
+     "name": "Anna Faris",
+     "character": "Jeanette (voice)",
+     "profile_path": "/tptTb0BQwCpKWETNqzkZzzf5qSZ.jpg"
+    },
+    {
+     "name": "Christina Applegate",
+     "character": "Brittany (voice)",
+     "profile_path": "/ncWS3iguCMCQ53ewacGpMGA6MHv.jpg"
+    },
+    {
+     "name": "Alan Tudyk",
+     "character": "Simone (voice)",
+     "profile_path": "/jUuUbPuMGonFT5E2pcs4alfqaCN.jpg"
+    }
+   ],
+   "trailer": "-dOc_fqmcZo"
+  },
+  "thelorax|2012": {
+   "tmdb_id": 73723,
+   "title_en": "The Lorax",
+   "title_tr_tmdb": "Loraks",
+   "backdrop_path": "/71FjlP0qZPc1iymcHf8u5vXfH50.jpg",
+   "poster_path": "/tePFnZFw5JvjwjQjaKkqDPNMLPU.jpg",
+   "overview_en": "A 12-year-old boy searches for the one thing that will enable him to win the affection of the girl of his dreams. To find it he must discover the story of the Lorax, the grumpy yet charming creature who fights to protect his world.",
+   "overview_tr": "Dr. Seuss'un çocuk kitabından esinlenen filmde umudun sonsuz gücünü insanlarla paylaşan orman cini Lorax başrolde...  Animasyon tekniğiyle hazırlanan filmin diğer bir karakteri de hoşlandığı kızın dikkatini çekebilmek için uğraşan bir çocuğun maceraları anlatılıyor. Rüyalarının kızını elde edebilmek için çocuk, önce dünyasını korumak için savaşan sevimli yaramaz Lorax'ın öyküsünü keşfetmeli...",
+   "tagline_en": "Meet the original force of nature.",
+   "tagline_tr": null,
+   "genres_en": [
+    "Animation",
+    "Family"
+   ],
+   "genres_tr": [
+    "Animasyon",
+    "Aile"
+   ],
+   "runtime": 86,
+   "release_date": "2012-03-01",
+   "vote_average": 6.5,
+   "countries": [
+    "US",
+    "JP"
+   ],
+   "directors": [
+    "Chris Renaud"
+   ],
+   "cast": [
+    {
+     "name": "Danny DeVito",
+     "character": "The Lorax (voice)",
+     "profile_path": "/6kO4IN7ndoIGw2JhyhAQN3SFmdx.jpg"
+    },
+    {
+     "name": "Ed Helms",
+     "character": "Once-ler (voice)",
+     "profile_path": "/gPZ8tZaNQGAc3KZRIPp9rgGbEnN.jpg"
+    },
+    {
+     "name": "Zac Efron",
+     "character": "Ted Wiggins (voice)",
+     "profile_path": "/pdWXP7XG6qqOoxoLid1DWYwmaMY.jpg"
+    },
+    {
+     "name": "Rob Riggle",
+     "character": "Mr. Aloysius O'Hare (voice)",
+     "profile_path": "/hQgOp8vWxl6KPZbqzKSSL4k6G1j.jpg"
+    },
+    {
+     "name": "Taylor Swift",
+     "character": "Audrey (voice)",
+     "profile_path": "/3AcRnnAzIkmif4U9XWPvhtNX4sK.jpg"
+    },
+    {
+     "name": "Jenny Slate",
+     "character": "Mrs. Wiggins (voice)",
+     "profile_path": "/mMxsNO6r966ut0sordYzj2iDOb6.jpg"
+    },
+    {
+     "name": "Betty White",
+     "character": "Grammy Norma (voice)",
+     "profile_path": "/2Vlr5E1EoD4GglLHoSolLztBQWM.jpg"
+    },
+    {
+     "name": "Nasim Pedrad",
+     "character": "Once-ler's Mom (voice)",
+     "profile_path": "/vsTcEjvHi6CpkRPiASOfYXl2bNq.jpg"
+    },
+    {
+     "name": "Joel Swetow",
+     "character": "1st Marketing Guy (voice)",
+     "profile_path": "/eYGiPqOy65ldNUfOZ5liRETs7ok.jpg"
+    },
+    {
+     "name": "Michael Beattie",
+     "character": "2nd Marketing Guy (voice)",
+     "profile_path": "/gDuLXdt6xXMjGOmdqoLymyra55n.jpg"
+    }
+   ],
+   "trailer": "XbGnmKPSq9k"
+  },
+  "alvinandthechipmunks|2007": {
+   "tmdb_id": 6477,
+   "title_en": "Alvin and the Chipmunks",
+   "title_tr_tmdb": "Alvin ve Sincaplar",
+   "backdrop_path": "/lKkkogTlIQT8o83GFQZZ3CA9MzB.jpg",
+   "poster_path": "/3s3WvpKPXXeKAPketDDqiQTi20S.jpg",
+   "overview_en": "A struggling songwriter named Dave Seville finds success when he comes across a trio of singing chipmunks: mischievous leader Alvin, brainy Simon, and chubby, impressionable Theodore.",
+   "overview_tr": "Üç sincap kovuklarında mutlu mesut yaşarken, evleri yılbaşı ağacı satan bir firma tarafından kesilir  ve Ian Hawk' a gönderilir. Hawk, Los Angeles’ta müzik piyasasında çalışmaktadır ve Dave Seville' in yakın arkadaşıdır. Dave, başarılı bir müzik kariyeri yapmayı hayal etmekten asla vazgeçmeyen bir şarkı yazarıdır. Jett Records’ a bir şarkısını sunar ama eline tutuşturulan bir sepet kek ile reddedilir… Oradaki yılbaşı ağacında yaşamaya devam eden zavallı sincaplar ise sıcak kurabiye ve keklerin kokusuyla sepete doluşuverirler ve macera başlar.",
+   "tagline_en": "The original entourage.",
+   "tagline_tr": null,
+   "genres_en": [
+    "Comedy",
+    "Family",
+    "Fantasy",
+    "Animation"
+   ],
+   "genres_tr": [
+    "Komedi",
+    "Aile",
+    "Fantastik",
+    "Animasyon"
+   ],
+   "runtime": 92,
+   "release_date": "2007-12-13",
+   "vote_average": 5.8,
+   "countries": [
+    "US"
+   ],
+   "directors": [
+    "Tim Hill"
+   ],
+   "cast": [
+    {
+     "name": "Jason Lee",
+     "character": "Dave",
+     "profile_path": "/64tEXo3xR9IFXsIJKSlJ2LUrrEA.jpg"
+    },
+    {
+     "name": "David Cross",
+     "character": "Ian",
+     "profile_path": "/aYsbAtUu5oWk1p8RY31k3w5Emul.jpg"
+    },
+    {
+     "name": "Cameron Richardson",
+     "character": "Claire",
+     "profile_path": "/g5Ib7uSd7CKNXbDAs67AyeqTNvZ.jpg"
+    },
+    {
+     "name": "Jane Lynch",
+     "character": "Gail",
+     "profile_path": "/nye6D17ZfCHQzr9faYZYyz1CPsZ.jpg"
+    },
+    {
+     "name": "Justin Long",
+     "character": "Alvin (voice)",
+     "profile_path": "/7TGXeHw4o86IBm6xknQotpludXK.jpg"
+    },
+    {
+     "name": "Matthew Gray Gubler",
+     "character": "Simon (voice)",
+     "profile_path": "/tHjIUjHFjl4Kzc4XQ7JSd1EHYSU.jpg"
+    },
+    {
+     "name": "Jesse McCartney",
+     "character": "Theodore (voice)",
+     "profile_path": "/4Amtwnuh5eaGOMcl3NMHJXyRbrg.jpg"
+    },
+    {
+     "name": "Allison Karman",
+     "character": "Female Intern 1",
+     "profile_path": null
+    },
+    {
+     "name": "Tiara Parker",
+     "character": "Female Intern 2",
+     "profile_path": "/6q1AM2heZbj4MjcF5wfen3sVwZ3.jpg"
+    },
+    {
+     "name": "Kira Verrastro",
+     "character": "Female Intern 3",
+     "profile_path": "/ssP5rds6Q9xt2CF58puYHGzmtEP.jpg"
+    }
+   ],
+   "trailer": "sc-C8uumMkw"
   }
  },
  "games": {
