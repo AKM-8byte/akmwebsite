@@ -5,8 +5,6 @@
   "scripts": {
     "sync": "node scripts/sync.mjs",
     "letterboxd": "node scripts/letterboxd.mjs",
-    "deploy": "npx --yes wrangler@4 pages deploy --branch main --commit-dirty=true",
-    "yayinla": "npm run sync && npm run deploy",
     "onizle": "python scripts/dev_preview.py"
   }
 }

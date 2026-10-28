@@ -1,12 +1,10 @@
 // AKM veri senkronizasyonu
-//   Canlı sitede filmler, oyunlar ve projeler /api/* ile Drive tablolarından otomatik okunur. Bu betik:
-//   - public/data/*.json yedek kopyalarını üretir (tablo okunamazsa site bunlara düşer),
+//   GitHub Actions bunu çalıştırır (siteyi yayınlamadan önce). Bu betik:
+//   - filmleri Letterboxd dışa aktarımından, oyun ve projeleri Drive tablolarından okuyup public/data/*.json üretir,
 //   - yeni film/oyun detaylarını TMDB/IGDB'den çekip yerel önbelleğe yazar,
-//   - --d1 ile yerel TMDB/IGDB önbelleğini Cloudflare D1'e yükler.
 //
 //   Kullanım:  node scripts/sync.mjs            (tablo + TMDB/IGDB)
 //              node scripts/sync.mjs --offline  (internete çıkmadan, sadece önbellekten)
-//              node scripts/sync.mjs --d1       (ayrıca TMDB önbelleğini D1'e yükler)
 //
 //   Anahtarlar .dev.vars dosyasından okunur (repoya girmez):
 //     TMDB_TOKEN, IGDB_CLIENT_ID, IGDB_CLIENT_SECRET
@@ -16,13 +14,12 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { execFileSync } from 'node:child_process';
 import {
   SHEET_CSV, sheetRows, filmKey, tmdbClient, fetchMovie, buildFilm,
-} from '../functions/_lib/films.js';
-import { letterboxdRows } from '../functions/_lib/letterboxd.js';
-import { GAMES_CSV, gameSheetRows, gameKey, igdbClient, gameDetails, buildGame } from '../functions/_lib/games.js';
-import { PROJECTS_CSV, projectSheetRows, buildProject } from '../functions/_lib/projects.js';
+} from './lib/films.js';
+import { letterboxdRows } from './lib/letterboxd.js';
+import { GAMES_CSV, gameSheetRows, gameKey, igdbClient, gameDetails, buildGame } from './lib/games.js';
+import { PROJECTS_CSV, projectSheetRows, buildProject } from './lib/projects.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DATA = path.join(ROOT, 'data');
@@ -30,7 +27,6 @@ const OUT = path.join(ROOT, 'public', 'data');
 const CACHE_FILE = path.join(DATA, 'cache.json');
 
 const OFFLINE = process.argv.includes('--offline');
-const TO_D1 = process.argv.includes('--d1');
 
 // ---------------- yardımcılar ----------------
 
@@ -114,21 +110,6 @@ async function syncFilms(tmdb, cache) {
   return films;
 }
 
-// Yerel TMDB/IGDB önbelleğini D1'e yükler; canlı API yeni kayıtlar dışında dış servise gitmez.
-function pushCacheToD1(cache) {
-  const q = (s) => `'${String(s).replace(/'/g, "''")}'`;
-  const insert = (table, entries) =>
-    Object.entries(entries).map(([key, d]) => `INSERT OR REPLACE INTO ${table} (key, data) VALUES (${q(key)}, ${q(JSON.stringify(d))});`);
-  const sql = [...insert('film_tmdb', cache.films), ...insert('game_igdb', cache.games)].join('\n');
-  const file = path.join(DATA, '.d1-seed.sql');
-  return writeFile(file, sql).then(() => {
-    execFileSync('npx', ['--yes', 'wrangler@4', 'd1', 'execute', 'akm-db', '--remote', '--yes', '--file=data/.d1-seed.sql'], {
-      cwd: ROOT, stdio: 'inherit', shell: true,
-    });
-    console.log(`✓ ${Object.keys(cache.films).length} film, ${Object.keys(cache.games).length} oyun detayı D1'e yüklendi`);
-  });
-}
-
 async function syncGames(igdb, cache) {
   const rows = gameSheetRows(await readSheet(GAMES_CSV, 'oyunlar.csv'));
   const games = await pool(rows, 3, async (r, i) => {
@@ -171,7 +152,6 @@ async function main() {
   const write = (name, data) => writeFile(path.join(OUT, `${name}.json`), JSON.stringify(data));
   await Promise.all([write('films', films), write('games', games), write('projects', projects)]);
   await writeFile(CACHE_FILE, JSON.stringify(cache, null, 1));
-  if (TO_D1) await pushCacheToD1(cache);
   console.log(`✓ public/data güncellendi (${new Date().toLocaleString('tr-TR')})`);
 }
 

@@ -1,6 +1,6 @@
 import { t, locale } from './i18n.js';
 
-// Sitenin kök adresi: hem akmwebsite.pages.dev/ hem kullanici.github.io/akmwebsite/ altında çalışsın diye.
+// Sitenin kök adresi: kullanici.github.io/akmwebsite/ gibi bir alt yolda da çalışsın diye.
 export const ROOT = new URL('../../', import.meta.url);
 export const href = (path) => {
   const u = new URL(path.replace(/^\//, ''), ROOT);

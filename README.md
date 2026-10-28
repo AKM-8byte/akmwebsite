@@ -1,22 +1,43 @@
 # AKM — Kişisel Arşiv
 
-Filmlerim, oyunlarım ve projelerim tek bir sitede: **https://akmwebsite.pages.dev**
-Site tamamen statik (Cloudflare Pages). Türkçe ve İngilizce dil seçeneği var.
+Filmlerim, oyunlarım ve projelerim tek bir sitede. Site tamamen statik ve **GitHub Pages**'te yayınlanır.
+Türkçe ve İngilizce dil seçeneği var. Cloudflare kullanılmıyor.
 
-## Veriler nereden geliyor?
+## Nasıl çalışıyor?
 
-Hepsi Google Drive'daki **AKM Web Sitesi Veritabanı** klasöründeki tablolardan. Tabloya satır ekle → **en geç ~1–2 dakika içinde sitede görünür, yayınlamaya gerek yok.**
+GitHub Actions ([.github/workflows/pages.yml](.github/workflows/pages.yml)) her `push`'ta, **15 dakikada bir** ve elle çalıştırıldığında:
+1. Filmleri Letterboxd verisinden, oyun ve projeleri Drive tablolarından okur,
+2. Yeni film/oyunların detaylarını TMDB / IGDB'den çeker (afiş, Türkçe ad, özet, oyuncular, fragman),
+3. `public/` klasörünü yayınlar.
 
-| Bölüm | Tablo | Ek bilgi |
-|---|---|---|
-| Filmler | *AKM Movies - Film Veritabanı* | TMDB (afiş, özet, oyuncular, fragman) → D1 `film_tmdb` |
-| Oyunlar | *AKM Games - Oyun Veritabanı* | IGDB (kapak, tür, geliştirici, fragman) → D1 `game_igdb` |
-| Projeler | *AKM Projects - Proje Veritabanı* | yok |
+Elle bir şey yayınlamana gerek yok; veriyi güncellemen yeter.
 
-- Yeni bir film/oyun ilk kez göründüğünde ek bilgisi otomatik çekilip D1'de saklanır.
-- Tablo okunamazsa site son yayınlanan kopyaya (`public/data/*.json`) düşer.
-- Üç tablo da **"Bağlantıya sahip herkes → Görüntüleyen"** olarak paylaşılmış kalmalı.
-- Tablo kimlikleri: `functions/_lib/films.js`, `games.js`, `projects.js`.
+## Filmler (Letterboxd)
+
+Letterboxd resmi API vermediği için veri, Letterboxd'den indirilen zip ile güncellenir.
+
+1. Letterboxd → **Settings → Import & Export → Export Your Data** ile zip'i indir.
+2. GitHub'da repoyu aç → `data/letterboxd` klasörü → **Add file → Upload files** → zip'i sürükle → **Commit changes**.
+3. Actions kendiliğinden zip'i açar, filmleri ekler; birkaç dakikada sitede görünür.
+
+Zip'in adı tarih içerir (`letterboxd-ahmetkyr-2026-10-28-...zip`). Birden fazla zip varsa **en yenisi** kullanılır; eskileri silebilirsin.
+Bilgisayardan yapmak istersen: `npm run letterboxd -- "<zip yolu>" --push`
+
+Yeni film için Türkçe ad, afiş vb. TMDB'den otomatik gelir. Düzeltmek istersen `data/filmler.csv`'ye (GitHub'da düzenleyebilirsin) o filmin satırını yaz:
+```
+türkçe ad,orijinal ad,yıl,puan,afiş url,yorum,beğenildi,letterboxd url
+```
+Satır, orijinal ad + yıl (ya da letterboxd url) ile filme eşlenir. Türkçe ad ve afiş url doluysa TMDB'ninkinin önüne geçer; puan, yorum ve beğeni Letterboxd'den gelir.
+
+## Oyunlar ve projeler (Google Drive tabloları)
+
+Tabloya satır ekle → en geç ~15 dakikada sitede. Tablolar **"Bağlantıya sahip herkes → Görüntüleyen"** olarak paylaşılmış kalmalı.
+Tablo kimlikleri: `scripts/lib/games.js`, `scripts/lib/projects.js`.
+
+| Bölüm | Ek bilgi |
+|---|---|
+| Oyunlar | IGDB (kapak, tür, geliştirici, fragman) |
+| Projeler | yok |
 
 ### Oyun tablosu sütunları
 `Ad, Durum, Puan, Platform, Başladım, Bitirdim, Favori, Not`
@@ -28,22 +49,17 @@ Hepsi Google Drive'daki **AKM Web Sitesi Veritabanı** klasöründeki tablolarda
 `Başlık, Slug, Özet TR, Özet EN, Açıklama TR, Açıklama EN, Görsel URL, Teknolojiler, Canlı URL, GitHub URL, Öne Çıkan, Tarih`
 - Teknolojiler: `HTML; CSS; JavaScript` · Öne Çıkan: `evet` · Slug boşsa başlıktan üretilir.
 
-### Yedek kopyaları güncellemek / kodu yayınlamak
-`npm run yayinla` (tabloları indirir, yedek kopyaları yeniler, siteyi yükler). Sadece içerik eklemek için gerekmez.
-
 ## Kurulum (bir kez)
 
-- **Node.js LTS** kurulu olmalı.
-- Drive tabloları **"Bağlantıya sahip herkes → Görüntüleyen"** olarak paylaşılmalı.
-- `.dev.vars` dosyasına (repoya girmez) anahtarları yaz:
-  ```
-  TMDB_TOKEN=...            themoviedb.org → Ayarlar → API → API Read Access Token
-  IGDB_CLIENT_ID=...        dev.twitch.tv/console → uygulama → Client ID
-  IGDB_CLIENT_SECRET=...    aynı uygulama → New Secret
-  ```
-- Cloudflare girişi: `npx wrangler login`
+GitHub reposunda:
+- **Settings → Pages → Source: GitHub Actions**
+- **Settings → Secrets and variables → Actions** altında şu secret'lar tanımlı olmalı (yoksa detaylar eksik kalır):
+  - `TMDB_TOKEN` — themoviedb.org → Ayarlar → API → API Read Access Token
+  - `IGDB_CLIENT_ID` ve `IGDB_CLIENT_SECRET` — dev.twitch.tv/console → uygulama
 
 ## Yerelde bakmak
+
+Node.js LTS gerekir. Anahtarları `.dev.vars` dosyasına yaz (repoya girmez; örnek: `.dev.vars.example`).
 
 ```bash
 npm run sync

@@ -20,12 +20,8 @@ function writeCache(type, data) {
   }
 }
 
-// Film, oyun ve projeler Drive tablosundan canlı gelir (/api/*); API'ye ulaşılamazsa son yayınlanan kopya.
-// GitHub Pages sunucu kodu çalıştıramaz: orada sadece GitHub Actions'ın ürettiği JSON okunur.
-const HAS_API = !location.hostname.endsWith('github.io');
-const SOURCES = Object.fromEntries(
-  ['films', 'games', 'projects'].map((t) => [t, [HAS_API && `/api/${t}`, `/data/${t}.json`].filter(Boolean).map(href)]),
-);
+// GitHub Actions'ın ürettiği JSON dosyalarını okur (public/data).
+const SOURCES = Object.fromEntries(['films', 'games', 'projects'].map((t) => [t, [href(`/data/${t}.json`)]]));
 
 async function fetchList(type) {
   let data;
