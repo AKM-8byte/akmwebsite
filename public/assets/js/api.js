@@ -1,6 +1,6 @@
 import { href } from './util.js';
 // Okuma katmanı: önce tarayıcıdaki kopyayı anında göster, arkadan tazesini çek.
-const PREFIX = 'akm:v2:';
+const PREFIX = 'akm:v3:'; // sürüm değişince tarayıcıdaki eski kopyalar atılır
 const FRESH_MS = 60 * 1000;
 
 function readCache(type) {
@@ -27,7 +27,8 @@ async function fetchList(type) {
   let data;
   for (const url of SOURCES[type] || [href(`/data/${type}.json`)]) {
     try {
-      const res = await fetch(url, { headers: { accept: 'application/json' } });
+      // GitHub Pages dosyaları ~10 dk önbellekler; 'no-cache' her seferinde sunucuya "değişti mi?" diye sorar.
+      const res = await fetch(url, { cache: 'no-cache', headers: { accept: 'application/json' } });
       if (!res.ok || !(res.headers.get('content-type') || '').includes('json')) throw new Error(`${url} → ${res.status}`);
       data = await res.json();
       break;
