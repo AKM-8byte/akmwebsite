@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cumhuriyet'e Giden Yol</title>
+  <meta name="description" content="Samsun'dan Cumhuriyet'e, 1919–1923: Millî Mücadele'yi harita ve animasyonlarla anlatan iki dilli bir tarih sitesi.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ÜST ŞERİT: başlık ve dil düğmesi -->
+  <header class="topbar">
+    <div class="brand">
+      <h1 id="site-title">Cumhuriyet'e Giden Yol</h1>
+      <p id="site-subtitle">Samsun'dan Cumhuriyet'e · 1919–1923</p>
+    </div>
+    <nav class="top-actions">
+      <a href="#kaynaklar" class="link-sources" id="link-sources">Kaynaklar</a>
+      <div class="lang" role="group" aria-label="Dil / Language">
+        <button type="button" data-lang="tr" aria-pressed="true">TR</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ANA BÖLÜM: harita, zaman çubuğu, bilgi kartı -->
+  <main class="app" id="app">
+    <section class="map-wrap" id="map-wrap" aria-label="Harita">
+      <svg id="map" role="img" aria-label="Anadolu haritası"></svg>
+      <div class="map-paper" aria-hidden="true"></div>
+      <div class="cartouche" aria-hidden="true">
+        <span class="c-top">ANADOLU</span>
+        <span class="c-year">1919 – 1923</span>
+      </div>
+      <svg class="compass" viewBox="-50 -50 100 100" aria-hidden="true">
+        <circle r="34" class="c-ring"/>
+        <circle r="29" class="c-ring thin"/>
+        <path d="M0,-46 L7,0 L0,46 L-7,0Z" class="c-needle"/>
+        <path d="M0,-46 L7,0 L-7,0Z" class="c-needle-n"/>
+        <path d="M-46,0 L0,6 L46,0 L0,-6Z" class="c-needle light"/>
+        <text y="-38" class="c-n">N</text>
+      </svg>
+      <button type="button" class="legend-btn" id="legend-btn" aria-expanded="false">?</button>
+      <div class="legend" id="legend" hidden></div>
+    </section>
+
+    <section class="timeline" id="timeline" aria-label="Zaman çubuğu">
+      <div class="tl-controls">
+        <button type="button" class="tl-btn" id="tl-prev" aria-label="Önceki olay">
+          <svg viewBox="0 0 24 24"><path d="M15 5 8 12l7 7"/></svg>
+        </button>
+        <button type="button" class="tl-btn tl-play" id="tl-play" aria-label="Oynat">
+          <svg viewBox="0 0 24 24" class="i-play"><path d="M8 5v14l11-7z"/></svg>
+          <svg viewBox="0 0 24 24" class="i-pause"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+        </button>
+        <button type="button" class="tl-btn" id="tl-next" aria-label="Sonraki olay">
+          <svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+      <div class="tl-date" id="tl-date" aria-live="polite"></div>
+      <div class="tl-track" id="tl-track" role="slider" tabindex="0"
+           aria-valuemin="1" aria-valuenow="1" aria-label="Zaman çubuğu">
+        <div class="tl-line"></div>
+        <div class="tl-fill" id="tl-fill"></div>
+        <div class="tl-years" id="tl-years"></div>
+        <div class="tl-marks" id="tl-marks"></div>
+        <div class="tl-handle" id="tl-handle"><span></span></div>
+      </div>
+    </section>
+
+    <aside class="card" id="card" aria-live="polite"></aside>
+  </main>
+
+  <!-- KAYNAKLAR -->
+  <section class="sources" id="kaynaklar">
+    <div class="sources-inner" id="sources"></div>
+  </section>
+
+  <!-- AÇILIŞ EKRANI -->
+  <div class="intro" id="intro">
+    <div class="intro-card">
+      <p class="intro-kicker" id="intro-kicker"></p>
+      <h2 id="intro-title"></h2>
+      <p id="intro-text"></p>
+      <p class="intro-howto" id="intro-howto"></p>
+      <button type="button" class="intro-start" id="intro-start"></button>
+    </div>
+  </div>
+
+  <!-- Kâğıt dokusu için filtre (ekranda görünmez) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="paper-noise"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .25  0 0 0 0 .12  0 0 0 .5 0"/></filter>
+  </svg>
+
+  <script src="js/mapdata.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/scenes.js"></script>
+  <script src="js/timeline.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
