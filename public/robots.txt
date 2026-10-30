@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://akm-8byte.github.io/akmwebsite/sitemap.xml
