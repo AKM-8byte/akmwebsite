@@ -63,3 +63,11 @@ python scripts/dev_preview.py
 
 Kişisel bilgiler (isim, hakkımda, linkler): `public/assets/js/site.js`
 Arayüz metinleri (TR/EN): `public/assets/js/i18n.js`
+
+## Lisans ve üçüncü taraf içerikler
+
+Bu projede tarafımdan yazılan özgün kaynak kod, [GNU GPL v3.0-only](LICENSE) koşullarıyla lisanslanmıştır. Tam lisans metni: https://www.gnu.org/licenses/gpl-3.0.txt
+
+Bu lisans **üçüncü taraf içeriklere uygulanmaz**. TMDB/IGDB verileri, film afişleri, oyun görselleri, fragmanlar, harici yazı tipleri ve diğer üçüncü taraf materyaller ilgili hak sahiplerinin koşullarına tabidir. Bu materyallerin GPL kapsamında yeniden kullanılabileceği varsayılmamalıdır.
+
+TMDB ve IGDB hizmetlerini kullanırken ilgili sağlayıcıların güncel kullanım, atıf ve marka kurallarına uyulmalıdır. GPLv3 ticari kullanımı yasaklamaz.
