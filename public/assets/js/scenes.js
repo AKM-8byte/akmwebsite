@@ -96,7 +96,8 @@ export function filmScene(f, ctx) {
   const other = lang === 'tr' ? f.title_original : f.title_original !== f.title_en ? f.title_original : f.title_tr;
   const genres = L(f, 'genres');
   const overview = L(f, 'overview');
-  const tagline = L(d, 'tagline');
+  // Slogan çevirisi yoksa diğer dile düşme: Türkçe sayfada İngilizce slogan görünmesin.
+  const tagline = d[`tagline_${lang}`];
   const recs = related(f, ctx.all, (x) => x.genres_en || []);
   const meta = [
     f.year && [t('scene.year'), f.year],
