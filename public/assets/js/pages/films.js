@@ -64,7 +64,6 @@ function fillFilters(all) {
 }
 
 const SORTS = {
-  recent: (a, b) => a.order - b.order,
   rating: (a, b) => (b.rating ?? -1) - (a.rating ?? -1) || a.order - b.order,
   year: (a, b) => (b.year ?? 0) - (a.year ?? 0),
   oldest: (a, b) => (a.year ?? 9999) - (b.year ?? 9999),
@@ -95,7 +94,7 @@ createArchive({
       (!s.decade || (f.year >= s.decade && f.year < s.decade + 10)) &&
       (!s.fav || f.favorite),
   },
-  sort: (items, s) => [...items].sort(SORTS[s.sort] || SORTS.recent),
+  sort: (items, s) => [...items].sort(SORTS[s.sort] || SORTS.rating),
   scene: filmScene,
   afterScene: filmAfterScene,
   ambientUrl: (f) => tmdbImg(f?.backdrop_path || f?.poster_path, 'w780'),

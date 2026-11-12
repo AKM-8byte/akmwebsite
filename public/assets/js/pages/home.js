@@ -3,7 +3,7 @@ import { getList } from '../api.js';
 import { SITE } from '../site.js';
 import { fallbackArt } from '../archive.js';
 import { filmTitle } from '../scenes.js';
-import { esc, href, icons, tmdbImg, igdbImg, hueFromString, imgFallbacks, revealOnScroll } from '../util.js';
+import { esc, icons, tmdbImg, igdbImg, hueFromString, imgFallbacks, revealOnScroll } from '../util.js';
 import { t, L } from '../i18n.js';
 
 mountLayout('');
@@ -40,19 +40,6 @@ function render(films, games, projects) {
   $('#fan-films').innerHTML = (loved.length >= 3 ? loved : films).slice(0, 3).map((f) => tile(tmdbImg(f.poster_path, 'w185'), filmTitle(f), f.year)).join('');
   $('#fan-games').innerHTML = games.slice(0, 3).map((g) => tile(igdbImg(g.cover_url, 'cover_big'), g.title, g.year)).join('');
   $('#fan-projects').innerHTML = projects.slice(0, 3).map((p) => tile(p.image_url, p.title, (p.date || '').slice(0, 4))).join('');
-
-  // "Şu an" satırları
-  const playing = games.find((g) => g.status === 'oynuyorum');
-  const lastFilm = films[0];
-  const lastProject = projects[0];
-  const rows = [
-    lastFilm && [t('now.film'), filmTitle(lastFilm), href(`/filmler/?film=${lastFilm.id}`)],
-    playing && [t('now.game'), playing.title, href(`/oyunlar/?oyun=${playing.id}`)],
-    lastProject && [t('now.project'), lastProject.title, href(`/projeler/?p=${encodeURIComponent(lastProject.slug)}`)],
-  ].filter(Boolean);
-  $('#now').innerHTML = rows
-    .map(([k, v, href]) => `<a class="now__row" href="${href}"><small>${k}</small><b>${esc(v)}</b>${icons.arrow}</a>`)
-    .join('');
 
   // Kayan şerit: en yüksek puanlı, beğendiğim filmler ve oyunlar
   const words = [
